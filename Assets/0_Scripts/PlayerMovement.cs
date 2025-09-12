@@ -2,9 +2,6 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Header("Movement Settings")]
-    [SerializeField] private float moveSpeed = 5f;
-    
     [Header("Input")]
     [SerializeField] private KeyCode upKey = KeyCode.W;
     [SerializeField] private KeyCode downKey = KeyCode.S;
@@ -13,15 +10,22 @@ public class PlayerMovement : MonoBehaviour
     
     private Rigidbody2D rb;
     private Vector2 inputVector;
+    private PlayerStats playerStats;
     
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        playerStats = GetComponent<PlayerStats>();
         
-        // Ensure we have a Rigidbody2D component
+        // Ensure we have required components
         if (rb == null)
         {
             Debug.LogError("PlayerMovement requires a Rigidbody2D component!");
+        }
+        
+        if (playerStats == null)
+        {
+            Debug.LogError("PlayerMovement requires a PlayerStats component!");
         }
         
         // Set drag to 0 for instant movement
@@ -31,7 +35,16 @@ public class PlayerMovement : MonoBehaviour
     
     void Update()
     {
-        HandleInput();
+        // Only handle input if player is alive
+        if (playerStats != null && playerStats.IsAlive())
+        {
+            HandleInput();
+        }
+        else
+        {
+            // Stop movement if player is dead
+            inputVector = Vector2.zero;
+        }
     }
     
     void FixedUpdate()
@@ -65,7 +78,10 @@ public class PlayerMovement : MonoBehaviour
     private void MovePlayer()
     {
         // Apply movement directly to velocity (instant movement)
-        rb.linearVelocity = inputVector * moveSpeed;
+        if (playerStats != null)
+        {
+            rb.linearVelocity = inputVector * playerStats.GetMoveSpeed();
+        }
     }
     
     // Optional: Method to get current movement direction (useful for animations)
