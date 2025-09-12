@@ -114,7 +114,14 @@ public class Hotbar : MonoBehaviour
         UpdateSlotHighlight(previousSlot, false);
         UpdateSlotHighlight(selectedSlotIndex, true);
         
-        Debug.Log($"Selected hotbar slot {slotIndex + 1}");
+        // Get item name for debug log
+        string itemName = "Empty";
+        if (itemSlots[slotIndex] != null && itemSlots[slotIndex].GetItemData() != null)
+        {
+            itemName = itemSlots[slotIndex].GetItemData().ItemName;
+        }
+        
+        Debug.Log($"Selected hotbar slot {slotIndex + 1} - {itemName}");
     }
     
     private void UpdateSlotHighlight(int slotIndex, bool isSelected)

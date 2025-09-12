@@ -1,15 +1,15 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.EventSystems;
 using TMPro;
 
-public class UI_ItemController : MonoBehaviour
+public class UI_ItemController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Item Data")]
     [SerializeField] private UI_Item itemData;
     
     [Header("UI Components")]
     [SerializeField] private Image itemImage;
-    [SerializeField] private TextMeshProUGUI itemNameText;
     /*
     [Header("Optional Components")]
     [SerializeField] private Button itemButton;
@@ -25,22 +25,29 @@ public class UI_ItemController : MonoBehaviour
     {
         if (itemData == null)
         {
-            Debug.LogWarning("No item data assigned to UI_ItemController on " + gameObject.name);
+            // Handle empty slot
+            if (itemImage != null)
+            {
+                itemImage.sprite = null;
+                itemImage.color = new Color(1, 1, 1, 0); // Make transparent
+            }
             return;
         }
         
         // Set item image
-        if (itemImage != null && itemData.Image != null)
+        if (itemImage != null)
         {
-            itemImage.sprite = itemData.Image;
+            if (itemData.Image != null)
+            {
+                itemImage.sprite = itemData.Image;
+                itemImage.color = new Color(1, 1, 1, 1); // Make visible
+            }
+            else
+            {
+                itemImage.sprite = null;
+                itemImage.color = new Color(1, 1, 1, 0); // Make transparent
+            }
         }
-        
-        // Set item name text
-        if (itemNameText != null)
-        {
-            itemNameText.text = itemData.ItemName;
-        }
-        
     }
     /*
     // Set up button functionality
@@ -68,6 +75,21 @@ public class UI_ItemController : MonoBehaviour
     {
         itemData = newItemData;
         UpdateUI();
+    }
+    
+    // Hover tooltip functionality
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        // Only show tooltip if we have an item
+        if (itemData != null)
+        {
+            TooltipManager.ShowTooltip(itemData.ItemName);
+        }
+    }
+    
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        TooltipManager.HideTooltip();
     }
     
     // Getters for accessing item data
