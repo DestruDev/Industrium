@@ -25,27 +25,29 @@ public class UI_ItemController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     {
         if (itemData == null)
         {
-            // Handle empty slot
+            // Handle empty slot: disable the image component
             if (itemImage != null)
             {
-                itemImage.sprite = null;
-                itemImage.color = new Color(1, 1, 1, 0); // Make transparent
+                itemImage.enabled = false;
+                itemImage.sprite = null; // Clear sprite just in case
             }
             return;
         }
         
-        // Set item image
+        // Set item image: ensure image is enabled and set sprite/color
         if (itemImage != null)
         {
+            itemImage.enabled = true; // Ensure image is enabled
             if (itemData.Image != null)
             {
                 itemImage.sprite = itemData.Image;
-                itemImage.color = new Color(1, 1, 1, 1); // Make visible
+                itemImage.color = new Color(1, 1, 1, 1); // Make visible and fully opaque
             }
             else
             {
+                // If itemData exists but has no image, disable the image component
+                itemImage.enabled = false;
                 itemImage.sprite = null;
-                itemImage.color = new Color(1, 1, 1, 0); // Make transparent
             }
         }
     }
@@ -80,8 +82,8 @@ public class UI_ItemController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     // Hover tooltip functionality
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // Only show tooltip if we have an item
-        if (itemData != null)
+        // Only show tooltip if we have an item and no item is currently picked up
+        if (itemData != null && !IsItemPickedUp())
         {
             TooltipManager.ShowTooltip(itemData.ItemName);
         }
@@ -90,6 +92,20 @@ public class UI_ItemController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     public void OnPointerExit(PointerEventData eventData)
     {
         TooltipManager.HideTooltip();
+    }
+    
+    private bool IsItemPickedUp()
+    {
+        // Check if any ItemSlot has an item picked up
+        ItemSlot[] allSlots = FindObjectsOfType<ItemSlot>();
+        foreach (ItemSlot slot in allSlots)
+        {
+            if (slot.IsPickedUp())
+            {
+                return true;
+            }
+        }
+        return false;
     }
     
     // Getters for accessing item data

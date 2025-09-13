@@ -2,13 +2,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ItemSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler, IPointerEnterHandler, IPointerExitHandler
+public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Slot Settings")]
     [SerializeField] private bool isHotbarSlot = false;
     [SerializeField] private bool isInventorySlot = true;
     
-    [Header("Drag Settings")]
+    [Header("Click Settings")]
     [SerializeField] private Canvas canvas;
     [SerializeField] private GraphicRaycaster raycaster;
     
@@ -17,9 +17,11 @@ public class ItemSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     private UI_ItemController itemController;
     private bool isHighlighted = false;
     
-    // Drag icon stuff
-    private GameObject dragIcon;
-    private Image dragIconImage;
+    // Click pickup system
+    private static ItemSlot pickedUpSlot = null;
+    private static UI_Item pickedUpItemData = null;
+    private static GameObject cursorItem;
+    private static Image cursorItemImage;
     
     void Awake()
     {
@@ -38,81 +40,98 @@ public class ItemSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
     }
     
-    #region Drag Functionality
-    public void OnBeginDrag(PointerEventData eventData)
+    #region Click Functionality
+    public void OnPointerClick(PointerEventData eventData)
     {
-        // Only drag if we have an item
-        if (itemController == null || itemController.GetItemData() == null)
+        // Only work if inventory is open
+        if (!IsInventoryOpen())
             return;
             
-        // Create drag icon
-        CreateDragIcon();
-        
-        // Make original slot semi-transparent but keep it in place
-        canvasGroup.alpha = 0.6f;
-        canvasGroup.blocksRaycasts = false;
-    }
-    
-    public void OnDrag(PointerEventData eventData)
-    {
-        // Only drag if we have an item and drag icon exists
-        if (itemController == null || itemController.GetItemData() == null || dragIcon == null)
-            return;
-            
-        // Move drag icon with mouse
-        Vector2 mousePosition = Input.mousePosition;
-        dragIcon.transform.position = mousePosition;
-    }
-    
-    public void OnEndDrag(PointerEventData eventData)
-    {
-        // Always destroy the drag icon first
-        DestroyDragIcon();
-        
-        // Always restore transparency and raycasting
-        canvasGroup.alpha = 1f;
-        canvasGroup.blocksRaycasts = true;
-        
-        // Only process if we have an item
-        if (itemController == null || itemController.GetItemData() == null)
-            return;
-            
-        // Check what we're dropping on
-        ItemSlot targetSlot = GetDropTarget(eventData);
-        
-        if (targetSlot != null && targetSlot.CanAcceptItem(itemController.GetItemData()))
+        // If we have an item picked up, try to place it
+        if (pickedUpSlot != null)
         {
-            // Valid drop - move item to new slot
-            targetSlot.ReceiveItem(itemController);
+            PlaceItem();
+        }
+        // If we don't have an item picked up, try to pick up this slot's item
+        else if (itemController != null && itemController.GetItemData() != null)
+        {
+            PickUpItem();
+        }
+    }
+    
+    private void PickUpItem()
+    {
+        if (itemController == null || itemController.GetItemData() == null)
+            return;
+            
+        // Store item data before clearing
+        pickedUpItemData = itemController.GetItemData();
+        string itemName = pickedUpItemData.ItemName;
+        
+        // Set this as the picked up slot
+        pickedUpSlot = this;
+        
+        // Create cursor item
+        CreateCursorItem();
+        
+        // Clear the original slot completely (no semi-transparent silhouette)
+        itemController.SetItemData(null);
+        
+        Debug.Log($"Picked up: {itemName}");
+    }
+    
+    private void PlaceItem()
+    {
+        if (pickedUpSlot == null || pickedUpItemData == null)
+            return;
+            
+        // Get the current item in this slot
+        UI_Item currentItem = itemController?.GetItemData();
+        
+        // If this slot has an item, swap what we're holding
+        if (currentItem != null)
+        {
+            // Store what we were holding
+            UI_Item itemWeWereHolding = pickedUpItemData;
+            
+            // Put the current slot's item in our hand (swap what we're holding)
+            pickedUpItemData = currentItem;
+            
+            // Put what we were holding into this slot
+            itemController.SetItemData(itemWeWereHolding);
+            
+            // Update cursor item to show the new item we're holding
+            DestroyCursorItem();
+            CreateCursorItem();
+            
+            // Force tooltip refresh for this slot
+            ForceTooltipRefresh();
+            
+            Debug.Log($"Swapped to holding: {pickedUpItemData.ItemName}");
+        }
+        else
+        {
+            // Move item to this empty slot and clear pickup
+            itemController.SetItemData(pickedUpItemData);
+            
+            // Clear pickup
+            pickedUpSlot = null;
+            pickedUpItemData = null;
+            DestroyCursorItem();
+            
+            // Force tooltip refresh for this slot
+            ForceTooltipRefresh();
+            
+            Debug.Log($"Placed item in empty slot");
         }
     }
     #endregion
     
-    #region Drop Functionality
-    public void OnDrop(PointerEventData eventData)
-    {
-        ItemSlot draggedSlot = eventData.pointerDrag?.GetComponent<ItemSlot>();
-        
-        if (draggedSlot != null && draggedSlot.CanDrag())
-        {
-            ReceiveItem(draggedSlot.itemController);
-        }
-        
-        // Remove highlight
-        SetHighlight(false);
-    }
-    
+    #region Hover Functionality
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // Highlight when dragging over
-        if (eventData.pointerDrag != null)
-        {
-            ItemSlot draggedSlot = eventData.pointerDrag.GetComponent<ItemSlot>();
-            if (draggedSlot != null && draggedSlot.CanDrag())
-            {
-                SetHighlight(true);
-            }
-        }
+        // Optional: Add hover highlighting here if needed
+        SetHighlight(true);
     }
     
     public void OnPointerExit(PointerEventData eventData)
@@ -123,56 +142,81 @@ public class ItemSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     #endregion
     
     #region Helper Methods
-    private ItemSlot GetDropTarget(PointerEventData eventData)
+    private bool IsInventoryOpen()
     {
-        var results = new System.Collections.Generic.List<RaycastResult>();
-        raycaster.Raycast(eventData, results);
-        
-        foreach (var result in results)
+        // Check if inventory UI is active
+        Inventory inventory = FindFirstObjectByType<Inventory>();
+        if (inventory != null)
         {
-            ItemSlot slot = result.gameObject.GetComponent<ItemSlot>();
-            if (slot != null && slot != this)
-                return slot;
+            return inventory.IsInventoryOpen();
         }
-        
-        return null;
+        return false;
     }
     
-    private void CreateDragIcon()
+    private void CreateCursorItem()
     {
-        if (itemController == null || itemController.GetItemData() == null) return;
+        if (pickedUpItemData == null) return;
         
-        // Create a temporary GameObject for the drag icon
-        dragIcon = new GameObject("DragIcon");
-        dragIcon.transform.SetParent(canvas.transform);
-        dragIcon.transform.SetAsLastSibling();
+        // Create a temporary GameObject for the cursor item
+        cursorItem = new GameObject("CursorItem");
+        cursorItem.transform.SetParent(canvas.transform);
+        cursorItem.transform.SetAsLastSibling();
         
         // Add Image component and copy the item image
-        dragIconImage = dragIcon.AddComponent<Image>();
-        dragIconImage.sprite = itemController.GetItemData().Image;
-        dragIconImage.color = new Color(1, 1, 1, 0.8f); // Semi-transparent
-        dragIconImage.raycastTarget = false; // Don't block raycasts
+        cursorItemImage = cursorItem.AddComponent<Image>();
+        cursorItemImage.sprite = pickedUpItemData.Image;
+        cursorItemImage.color = new Color(1, 1, 1, 0.8f); // Semi-transparent
+        cursorItemImage.raycastTarget = false; // Don't block raycasts
         
-        // Set size and position
-        RectTransform dragRect = dragIcon.GetComponent<RectTransform>();
-        dragRect.sizeDelta = rectTransform.sizeDelta;
-        dragRect.position = Input.mousePosition;
+        // Get cursor settings from Inventory
+        Inventory inventory = FindFirstObjectByType<Inventory>();
+        float sizeX = inventory != null ? inventory.GetCursorItemSizeX() : 32f;
+        float sizeY = inventory != null ? inventory.GetCursorItemSizeY() : 32f;
+        float offsetX = inventory != null ? inventory.GetCursorOffsetX() : 0f;
+        float offsetY = inventory != null ? inventory.GetCursorOffsetY() : 0f;
+        
+        // Set size using inventory values
+        RectTransform cursorRect = cursorItem.GetComponent<RectTransform>();
+        cursorRect.sizeDelta = new Vector2(sizeX, sizeY);
+        
+        // Set position with offset
+        Vector2 mousePos = Input.mousePosition;
+        cursorRect.position = new Vector2(mousePos.x + offsetX, mousePos.y + offsetY);
     }
     
-    private void DestroyDragIcon()
+    private void DestroyCursorItem()
     {
-        if (dragIcon != null)
+        if (cursorItem != null)
         {
-            Destroy(dragIcon);
-            dragIcon = null;
-            dragIconImage = null;
+            Destroy(cursorItem);
+            cursorItem = null;
+            cursorItemImage = null;
+        }
+    }
+    
+    // Update cursor item position
+    void Update()
+    {
+        if (cursorItem != null)
+        {
+            // Get offset values from Inventory
+            Inventory inventory = FindFirstObjectByType<Inventory>();
+            float offsetX = inventory != null ? inventory.GetCursorOffsetX() : 0f;
+            float offsetY = inventory != null ? inventory.GetCursorOffsetY() : 0f;
+            
+            Vector2 mousePos = Input.mousePosition;
+            cursorItem.transform.position = new Vector2(mousePos.x + offsetX, mousePos.y + offsetY);
         }
     }
     
     // Safety cleanup in case something goes wrong
     void OnDisable()
     {
-        DestroyDragIcon();
+        if (pickedUpSlot == this)
+        {
+            pickedUpSlot = null;
+            DestroyCursorItem();
+        }
     }
     
     private void SetHighlight(bool highlight)
@@ -182,6 +226,20 @@ public class ItemSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
         // You can add visual highlighting here
         // For example, change the background color or add a border
         // This is optional - you might want to modify the ItemBackground color
+    }
+    
+    private void ForceTooltipRefresh()
+    {
+        // Force a tooltip refresh by simulating mouse enter/exit
+        if (itemController != null && itemController.GetItemData() != null)
+        {
+            // Create a fake pointer event to trigger tooltip
+            PointerEventData fakeEvent = new PointerEventData(UnityEngine.EventSystems.EventSystem.current);
+            fakeEvent.position = Input.mousePosition;
+            
+            // Trigger the tooltip
+            itemController.OnPointerEnter(fakeEvent);
+        }
     }
     
     public bool CanAcceptItem(UI_Item item)
@@ -227,5 +285,6 @@ public class ItemSlot : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public bool IsHotbarSlot() => isHotbarSlot;
     public bool IsInventorySlot() => isInventorySlot;
     public UI_ItemController GetItemController() => itemController;
+    public bool IsPickedUp() => pickedUpSlot != null;
     #endregion
 }
