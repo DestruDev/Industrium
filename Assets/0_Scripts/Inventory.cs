@@ -31,7 +31,15 @@ public class Inventory : MonoBehaviour
     {
         if (inventoryUI != null)
         {
-            inventoryUI.SetActive(!inventoryUI.activeSelf);
+            bool willBeOpen = !inventoryUI.activeSelf;
+
+            // If the inventory is about to close, clear all hover highlights BEFORE deactivating slots
+            if (!willBeOpen)
+            {
+                ItemSlot.ClearAllHoverHighlights();
+            }
+
+            inventoryUI.SetActive(willBeOpen);
         }
     }
     

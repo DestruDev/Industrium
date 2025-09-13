@@ -16,6 +16,11 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     private CanvasGroup canvasGroup;
     private UI_ItemController itemController;
     private bool isHighlighted = false;
+    private Image itemBackground;
+    private Color originalBackgroundColor;
+    private Image borderImage; // For hotbar selection
+    private Color originalBorderColor;
+    private bool isHotbarSelected = false;
     
     // Click pickup system
     private static ItemSlot pickedUpSlot = null;
@@ -38,6 +43,11 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         // Add CanvasGroup if it doesn't exist
         if (canvasGroup == null)
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            
+        // Find ItemBackground image
+        FindItemBackground();
+        // Find Border image for hotbar highlighting
+        FindBorderImage();
     }
     
     #region Click Functionality
@@ -130,8 +140,11 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     #region Hover Functionality
     public void OnPointerEnter(PointerEventData eventData)
     {
-        // Optional: Add hover highlighting here if needed
-        SetHighlight(true);
+        // Only highlight if inventory is open
+        if (IsInventoryOpen())
+        {
+            SetHighlight(true);
+        }
     }
     
     public void OnPointerExit(PointerEventData eventData)
@@ -165,7 +178,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         // Add Image component and copy the item image
         cursorItemImage = cursorItem.AddComponent<Image>();
         cursorItemImage.sprite = pickedUpItemData.Image;
-        cursorItemImage.color = new Color(1, 1, 1, 0.8f); // Semi-transparent
+        cursorItemImage.color = new Color(1, 1, 1, 1f); // Fully opaque
         cursorItemImage.raycastTarget = false; // Don't block raycasts
         
         // Get cursor settings from Inventory
@@ -207,6 +220,7 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
             Vector2 mousePos = Input.mousePosition;
             cursorItem.transform.position = new Vector2(mousePos.x + offsetX, mousePos.y + offsetY);
         }
+        
     }
     
     // Safety cleanup in case something goes wrong
@@ -219,13 +233,105 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
         }
     }
     
+    private void FindItemBackground()
+    {
+        // Look for ItemBackground Image component
+        Transform itemBackgroundTransform = transform.Find("ItemBackground");
+        if (itemBackgroundTransform != null)
+        {
+            itemBackground = itemBackgroundTransform.GetComponent<Image>();
+        }
+        
+        // Fallback: search in children if not found directly
+        if (itemBackground == null)
+        {
+            Image[] childImages = GetComponentsInChildren<Image>();
+            foreach (Image img in childImages)
+            {
+                if (img.gameObject.name == "ItemBackground")
+                {
+                    itemBackground = img;
+                    break;
+                }
+            }
+        }
+        
+        // Store original color
+        if (itemBackground != null)
+        {
+            originalBackgroundColor = itemBackground.color;
+        }
+    }
+    
+    private void FindBorderImage()
+    {
+        // Look for Border in children
+        Transform borderTransform = transform.Find("Border");
+        if (borderTransform != null)
+        {
+            borderImage = borderTransform.GetComponent<Image>();
+        }
+        
+        // Fallback: search in all children if not found directly
+        if (borderImage == null)
+        {
+            Image[] childImages = GetComponentsInChildren<Image>();
+            foreach (Image img in childImages)
+            {
+                if (img.gameObject.name == "Border")
+                {
+                    borderImage = img;
+                    break;
+                }
+            }
+        }
+        
+        // Store original color
+        if (borderImage != null)
+        {
+            originalBorderColor = borderImage.color;
+        }
+    }
+    
     private void SetHighlight(bool highlight)
     {
         isHighlighted = highlight;
         
-        // You can add visual highlighting here
-        // For example, change the background color or add a border
-        // This is optional - you might want to modify the ItemBackground color
+        // Hover highlighting (ItemBackground) - only for mouse hover
+        if (itemBackground != null)
+        {
+            // Always check if inventory is open - if not, force highlight off
+            bool shouldHighlight = highlight && IsInventoryOpen();
+            
+            if (shouldHighlight)
+            {
+                itemBackground.color = new Color(0.949f, 0.949f, 0.949f, 1f); // F2F2F2
+            }
+            else
+            {
+                itemBackground.color = originalBackgroundColor;
+            }
+        }
+        
+        // Don't call UpdateHotbarHighlight() here - hover should not affect border
+    }
+    
+    private void UpdateHotbarHighlight(Color highlightColor, Color normalColor, float highlightAlpha, float normalAlpha)
+    {
+        if (borderImage != null && isHotbarSlot)
+        {
+            if (isHotbarSelected)
+            {
+                Color newColor = highlightColor;
+                newColor.a = highlightAlpha;
+                borderImage.color = newColor;
+            }
+            else
+            {
+                // Return to original border color when unselected
+                borderImage.color = originalBorderColor;
+            }
+        }
     }
     
     private void ForceTooltipRefresh()
@@ -286,5 +392,28 @@ public class ItemSlot : MonoBehaviour, IPointerClickHandler, IPointerEnterHandle
     public bool IsInventorySlot() => isInventorySlot;
     public UI_ItemController GetItemController() => itemController;
     public bool IsPickedUp() => pickedUpSlot != null;
+    public bool IsHotbarSelected() => isHotbarSelected;
+    #endregion
+    
+    #region Hotbar Methods
+    public void SetHotbarSelected(bool selected, Color highlightColor, Color normalColor, float highlightAlpha, float normalAlpha)
+    {
+        isHotbarSelected = selected;
+        UpdateHotbarHighlight(highlightColor, normalColor, highlightAlpha, normalAlpha); // Only update hotbar highlighting, not hover
+    }
+    
+    public static void ClearAllHoverHighlights()
+    {
+        ItemSlot[] allSlots = FindObjectsByType<ItemSlot>(FindObjectsSortMode.None);
+        foreach (ItemSlot slot in allSlots)
+        {
+            // Force clear the highlight state and visual
+            slot.isHighlighted = false;
+            if (slot.itemBackground != null)
+            {
+                slot.itemBackground.color = slot.originalBackgroundColor;
+            }
+        }
+    }
     #endregion
 }

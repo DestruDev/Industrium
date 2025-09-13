@@ -97,7 +97,7 @@ public class UI_ItemController : MonoBehaviour, IPointerEnterHandler, IPointerEx
     private bool IsItemPickedUp()
     {
         // Check if any ItemSlot has an item picked up
-        ItemSlot[] allSlots = FindObjectsOfType<ItemSlot>();
+        ItemSlot[] allSlots = FindObjectsByType<ItemSlot>(FindObjectsSortMode.None);
         foreach (ItemSlot slot in allSlots)
         {
             if (slot.IsPickedUp())

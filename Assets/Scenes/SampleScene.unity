@@ -169,7 +169,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -326,6 +326,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &39863926
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -433,7 +437,7 @@ GameObject:
   m_Component:
   - component: {fileID: 43126340}
   m_Layer: 5
-  m_Name: BottomUI
+  m_Name: HotBarUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -584,7 +588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -666,6 +670,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &56963898
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -813,7 +821,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -112366,6 +112374,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &84698027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112951,6 +112963,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &289167951
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113023,7 +113039,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -114045,6 +114061,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &490757524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114124,6 +114144,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &492341652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114300,6 +114324,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -114620,7 +114648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -114926,7 +114954,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -115030,6 +115058,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -115238,19 +115270,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemSlots:
-  - {fileID: 2143450963}
-  - {fileID: 1638516806}
-  - {fileID: 614961162}
-  - {fileID: 1720876673}
-  - {fileID: 1568562796}
-  - {fileID: 1077709028}
-  - {fileID: 1729839242}
-  - {fileID: 1179109175}
+  - {fileID: 2143450966}
+  - {fileID: 1638516808}
+  - {fileID: 614961164}
+  - {fileID: 1720876675}
+  - {fileID: 1568562798}
+  - {fileID: 1077709030}
+  - {fileID: 1729839244}
+  - {fileID: 1179109177}
   selectedSlotIndex: 0
-  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  normalColor: {r: 1, g: 1, b: 1, a: 1}
-  highlightAlpha: 1
-  normalAlpha: 1
 --- !u!1 &645748319
 GameObject:
   m_ObjectHideFlags: 0
@@ -115630,6 +115658,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!1 &678612730
 GameObject:
   m_ObjectHideFlags: 0
@@ -115680,7 +115712,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -115755,7 +115787,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -115830,7 +115862,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -115905,7 +115937,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -115980,7 +116012,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -116062,6 +116094,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &721549601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116209,7 +116245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -116366,6 +116402,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &807102691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116445,6 +116485,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &837202408
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117049,6 +117093,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &1071160826
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117150,6 +117198,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!1 &1094031355
 GameObject:
   m_ObjectHideFlags: 0
@@ -117200,7 +117252,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -117500,7 +117552,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -117582,6 +117634,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &1142009580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117661,6 +117717,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &1162532584
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117736,7 +117796,7 @@ MonoBehaviour:
   cursorItemSizeX: 80
   cursorItemSizeY: 80
   cursorOffsetX: 0
-  cursorOffsetY: 0
+  cursorOffsetY: 5
 --- !u!114 &1167997867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117829,6 +117889,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!1 &1181861666
 GameObject:
   m_ObjectHideFlags: 0
@@ -117958,7 +118022,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -118112,7 +118176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -118194,6 +118258,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &1259373896
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118266,7 +118334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -118416,7 +118484,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -118723,6 +118791,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &1360699384
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -118795,7 +118867,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.801, g: 0.801, b: 0.801, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -119156,7 +119228,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -119531,7 +119603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -119606,7 +119678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -119710,6 +119782,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!1 &1574470159
 GameObject:
   m_ObjectHideFlags: 0
@@ -119760,7 +119836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -119842,6 +119918,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &1591300729
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120064,7 +120144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -120168,6 +120248,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!1 &1639517949
 GameObject:
   m_ObjectHideFlags: 0
@@ -120218,7 +120302,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -120517,6 +120601,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!1 &1729839240
 GameObject:
   m_ObjectHideFlags: 0
@@ -120596,6 +120684,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!1 &1736709657
 GameObject:
   m_ObjectHideFlags: 0
@@ -120646,7 +120738,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -120721,7 +120813,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -120953,6 +121045,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &1756370228
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121213,7 +121309,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -122779,6 +122875,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &1857184805
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122933,6 +123033,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &1880860986
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123005,7 +123109,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -123455,7 +123559,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -123878,7 +123982,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -124008,6 +124112,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &2069040436
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124162,6 +124270,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &2084311865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124391,6 +124503,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!114 &2096676540
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -124613,7 +124729,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.8, g: 0.8, b: 0.8, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -124932,6 +125048,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!1 &2143450961
 GameObject:
   m_ObjectHideFlags: 0
@@ -125011,6 +125131,10 @@ MonoBehaviour:
   isInventorySlot: 1
   canvas: {fileID: 1403390129}
   raycaster: {fileID: 1403390127}
+  highlightColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  normalColor: {r: 1, g: 1, b: 1, a: 1}
+  highlightAlpha: 1
+  normalAlpha: 0.7
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
