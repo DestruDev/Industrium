@@ -1,9 +1,11 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Inventory : MonoBehaviour
 {
     [Header("Inventory UI")]
     [SerializeField] private GameObject inventoryUI;
+    private AdminConsole adminConsole;
     
     [Header("Cursor Item Settings")]
     [SerializeField] private float cursorItemSizeX = 32f;
@@ -11,19 +13,87 @@ public class Inventory : MonoBehaviour
     [SerializeField] private float cursorOffsetX = 0f;
     [SerializeField] private float cursorOffsetY = 0f;
     
+    [Header("Slot References")]
+    [SerializeField] private ItemSlot[] hotbarSlots = new ItemSlot[8];
+    [SerializeField] private ItemSlot[] inventorySlots;
+    
+    [Header("Debug Info")]
+    [SerializeField] private bool showDebugInfo = true;
+    
     void Start()
     {
         if (inventoryUI != null)
         {
             inventoryUI.SetActive(false);
         }
+        adminConsole = FindFirstObjectByType<AdminConsole>();
+        
+        // Initialize slot references
+        InitializeSlotReferences();
+    }
+    
+    private void InitializeSlotReferences()
+    {
+        // If hotbar slots are not assigned, try to find them
+        if (hotbarSlots == null || hotbarSlots.Length == 0 || hotbarSlots[0] == null)
+        {
+            if (showDebugInfo) Debug.Log("Hotbar slots not assigned, attempting to find them...");
+            
+            // Try to find hotbar slots by looking for ItemSlots that are marked as hotbar slots
+            ItemSlot[] allSlots = FindObjectsByType<ItemSlot>(FindObjectsSortMode.None);
+            List<ItemSlot> foundHotbarSlots = new List<ItemSlot>();
+            
+            foreach (ItemSlot slot in allSlots)
+            {
+                if (slot.IsHotbarSlot())
+                {
+                    foundHotbarSlots.Add(slot);
+                }
+            }
+            
+            if (foundHotbarSlots.Count > 0)
+            {
+                hotbarSlots = foundHotbarSlots.ToArray();
+                if (showDebugInfo) Debug.Log($"Found {hotbarSlots.Length} hotbar slots automatically");
+            }
+        }
+        
+        // If inventory slots are not assigned, try to find them
+        if (inventorySlots == null || inventorySlots.Length == 0 || (inventorySlots.Length > 0 && inventorySlots[0] == null))
+        {
+            if (showDebugInfo) Debug.Log("Inventory slots not assigned, attempting to find them...");
+            
+            // Try to find inventory slots by looking for ItemSlots that are marked as inventory slots
+            ItemSlot[] allSlots = FindObjectsByType<ItemSlot>(FindObjectsSortMode.None);
+            List<ItemSlot> foundInventorySlots = new List<ItemSlot>();
+            
+            foreach (ItemSlot slot in allSlots)
+            {
+                if (slot.IsInventorySlot())
+                {
+                    foundInventorySlots.Add(slot);
+                }
+            }
+            
+            if (foundInventorySlots.Count > 0)
+            {
+                inventorySlots = foundInventorySlots.ToArray();
+                if (showDebugInfo) Debug.Log($"Found {inventorySlots.Length} inventory slots automatically");
+            }
+        }
+        
+        if (showDebugInfo) Debug.Log($"Slot initialization complete - Hotbar: {hotbarSlots?.Length ?? 0}, Inventory: {inventorySlots?.Length ?? 0}");
     }
     
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            ToggleInventory();
+            // Only allow inventory toggle if admin console is not open
+            if (adminConsole == null || !IsAdminConsoleOpen())
+            {
+                ToggleInventory();
+            }
         }
     }
     
@@ -49,9 +119,211 @@ public class Inventory : MonoBehaviour
         return inventoryUI != null && inventoryUI.activeSelf;
     }
     
+    // Private method to check if admin console is open
+    private bool IsAdminConsoleOpen()
+    {
+        return adminConsole != null && adminConsole.adminPanel != null && adminConsole.adminPanel.activeSelf;
+    }
+    
     // Public getters for cursor item settings
     public float GetCursorItemSizeX() => cursorItemSizeX;
     public float GetCursorItemSizeY() => cursorItemSizeY;
     public float GetCursorOffsetX() => cursorOffsetX;
     public float GetCursorOffsetY() => cursorOffsetY;
+    
+    /// <summary>
+    /// Spawn an item into the inventory by ID, prioritizing hotbar slots first
+    /// </summary>
+    /// <param name="itemID">The ID of the item to spawn</param>
+    /// <returns>True if the item was successfully spawned, false otherwise</returns>
+    public bool SpawnItemByID(int itemID)
+    {
+        if (showDebugInfo) Debug.Log($"Attempting to spawn item with ID: {itemID}");
+        
+        // Get the item from ItemManager
+        if (ItemManager.Instance == null)
+        {
+            Debug.LogError("ItemManager not found! Make sure ItemManager is in the scene.");
+            return false;
+        }
+        
+        UI_Item itemToSpawn = ItemManager.Instance.GetItemByID(itemID);
+        if (itemToSpawn == null)
+        {
+            Debug.LogWarning($"Item with ID {itemID} not found in database.");
+            return false;
+        }
+        
+        if (showDebugInfo) Debug.Log($"Found item: {itemToSpawn.ItemName}");
+        
+        // Find an available slot
+        ItemSlot availableSlot = FindAvailableSlot();
+        if (availableSlot == null)
+        {
+            Debug.LogWarning("No available slots in inventory!");
+            return false;
+        }
+        
+        if (showDebugInfo) Debug.Log($"Found available slot: {availableSlot.name}");
+        
+        // Spawn the item into the slot
+        return SpawnItemIntoSlot(availableSlot, itemToSpawn);
+    }
+    
+    /// <summary>
+    /// Find the first available slot, prioritizing hotbar slots (1-8) then inventory slots
+    /// </summary>
+    /// <returns>The first available ItemSlot, or null if none are available</returns>
+    private ItemSlot FindAvailableSlot()
+    {
+        // First, try to use the Hotbar component if it exists
+        Hotbar hotbar = FindFirstObjectByType<Hotbar>();
+        if (hotbar != null)
+        {
+            if (showDebugInfo) Debug.Log("Found Hotbar component, using it for slot detection");
+            
+            // Check hotbar slots first (slots 0-7, which correspond to 1-8)
+            for (int i = 0; i < 8; i++)
+            {
+                ItemSlot slot = hotbar.GetSlot(i);
+                if (slot != null && IsSlotEmpty(slot))
+                {
+                    if (showDebugInfo) Debug.Log($"Selected hotbar slot {i + 1}: {slot.name}");
+                    return slot;
+                }
+            }
+            if (showDebugInfo) Debug.Log("All hotbar slots are full, checking inventory slots...");
+        }
+        
+        // Use cached hotbar slots if available
+        if (hotbarSlots != null && hotbarSlots.Length > 0)
+        {
+            if (showDebugInfo) Debug.Log("Using cached hotbar slots");
+            for (int i = 0; i < hotbarSlots.Length; i++)
+            {
+                if (hotbarSlots[i] != null && IsSlotEmpty(hotbarSlots[i]))
+                {
+                    if (showDebugInfo) Debug.Log($"Selected cached hotbar slot {i + 1}: {hotbarSlots[i].name}");
+                    return hotbarSlots[i];
+                }
+            }
+            if (showDebugInfo) Debug.Log("All cached hotbar slots are full, checking inventory slots...");
+        }
+        
+        // Use cached inventory slots if available
+        if (inventorySlots != null && inventorySlots.Length > 0)
+        {
+            if (showDebugInfo) Debug.Log("Using cached inventory slots");
+            for (int i = 0; i < inventorySlots.Length; i++)
+            {
+                if (inventorySlots[i] != null && IsSlotEmpty(inventorySlots[i]))
+                {
+                    if (showDebugInfo) Debug.Log($"Selected cached inventory slot {i + 1}: {inventorySlots[i].name}");
+                    return inventorySlots[i];
+                }
+            }
+        }
+        
+        // Fallback: Get all ItemSlots in the scene (including inactive ones)
+        ItemSlot[] allSlots = FindObjectsByType<ItemSlot>(FindObjectsSortMode.None);
+        
+        Debug.Log($"Found {allSlots.Length} total ItemSlots in scene (including inactive)");
+        
+        // First, try to find an empty hotbar slot (slots 1-8)
+        List<ItemSlot> foundHotbarSlots = new List<ItemSlot>();
+        List<ItemSlot> foundInventorySlots = new List<ItemSlot>();
+        
+        foreach (ItemSlot slot in allSlots)
+        {
+            if (slot.IsHotbarSlot())
+            {
+                foundHotbarSlots.Add(slot);
+                Debug.Log($"Found hotbar slot: {slot.name} (Active: {slot.gameObject.activeInHierarchy})");
+            }
+            else if (slot.IsInventorySlot())
+            {
+                foundInventorySlots.Add(slot);
+                Debug.Log($"Found inventory slot: {slot.name} (Active: {slot.gameObject.activeInHierarchy})");
+            }
+            else
+            {
+                Debug.LogWarning($"Found slot that is neither hotbar nor inventory: {slot.name}");
+            }
+        }
+        
+        Debug.Log($"Total hotbar slots: {foundHotbarSlots.Count}, Total inventory slots: {foundInventorySlots.Count}");
+        
+        // Sort hotbar slots by name to get proper order (assuming they're named like "Slot1", "Slot2", etc.)
+        foundHotbarSlots.Sort((a, b) => a.name.CompareTo(b.name));
+        
+        // Check hotbar slots first (prioritize slots 1-8)
+        foreach (ItemSlot slot in foundHotbarSlots)
+        {
+            bool isEmpty = IsSlotEmpty(slot);
+            Debug.Log($"Hotbar slot {slot.name}: Empty = {isEmpty}");
+            if (isEmpty)
+            {
+                Debug.Log($"Selected hotbar slot: {slot.name}");
+                return slot;
+            }
+        }
+        
+        // If no hotbar slots available, check inventory slots
+        foreach (ItemSlot slot in foundInventorySlots)
+        {
+            bool isEmpty = IsSlotEmpty(slot);
+            Debug.Log($"Inventory slot {slot.name}: Empty = {isEmpty}");
+            if (isEmpty)
+            {
+                Debug.Log($"Selected inventory slot: {slot.name}");
+                return slot;
+            }
+        }
+        
+        Debug.LogWarning("No available slots found!");
+        return null; // No available slots
+    }
+    
+    /// <summary>
+    /// Check if a slot is empty (has no item)
+    /// </summary>
+    /// <param name="slot">The slot to check</param>
+    /// <returns>True if the slot is empty, false otherwise</returns>
+    private bool IsSlotEmpty(ItemSlot slot)
+    {
+        if (slot == null) return false;
+        
+        UI_ItemController controller = slot.GetItemController();
+        if (controller == null) return false;
+        
+        return controller.GetItemData() == null;
+    }
+    
+    /// <summary>
+    /// Spawn an item into a specific slot
+    /// </summary>
+    /// <param name="slot">The slot to spawn the item into</param>
+    /// <param name="item">The item to spawn</param>
+    /// <returns>True if successful, false otherwise</returns>
+    private bool SpawnItemIntoSlot(ItemSlot slot, UI_Item item)
+    {
+        if (slot == null || item == null)
+        {
+            Debug.LogError("Cannot spawn item: slot or item is null");
+            return false;
+        }
+        
+        UI_ItemController controller = slot.GetItemController();
+        if (controller == null)
+        {
+            Debug.LogError("Cannot spawn item: slot has no UI_ItemController");
+            return false;
+        }
+        
+        // Set the item data
+        controller.SetItemData(item);
+        
+        Debug.Log($"Successfully spawned {item.ItemName} (ID: {item.ID}) into slot: {slot.name}");
+        return true;
+    }
 }
