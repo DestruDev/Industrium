@@ -4,18 +4,14 @@ using UnityEngine.UI;
 public class Hotbar : MonoBehaviour
 {
     [Header("Hotbar Settings")]
-    [SerializeField] private UI_ItemController[] itemSlots = new UI_ItemController[8];
+    [SerializeField] private ItemSlot[] itemSlots = new ItemSlot[8];
     [SerializeField] private int selectedSlotIndex = 0;
     
-    [Header("Visual Highlighting")]
+    [Header("Hotbar Highlight Settings")]
     [SerializeField] private Color highlightColor = Color.yellow;
     [SerializeField] private Color normalColor = Color.white;
     [SerializeField] private float highlightAlpha = 1f;
     [SerializeField] private float normalAlpha = 0.7f;
-    
-    // Store original colors for each slot
-    private Image[] slotBackgrounds;
-    private Color[] originalColors;
     
     void Start()
     {
@@ -30,48 +26,7 @@ public class Hotbar : MonoBehaviour
     
     private void InitializeSlots()
     {
-        // Get background images for visual highlighting
-        slotBackgrounds = new Image[itemSlots.Length];
-        originalColors = new Color[itemSlots.Length];
-        
-        for (int i = 0; i < itemSlots.Length; i++)
-        {
-            if (itemSlots[i] != null)
-            {
-                // Look for the ItemBackground Image component specifically
-                Transform itemBackgroundTransform = itemSlots[i].transform.Find("ItemBackground");
-                Image bgImage = null;
-                
-                if (itemBackgroundTransform != null)
-                {
-                    bgImage = itemBackgroundTransform.GetComponent<Image>();
-                }
-                
-                // Fallback: search in children if not found directly
-                if (bgImage == null)
-                {
-                    Image[] childImages = itemSlots[i].GetComponentsInChildren<Image>();
-                    foreach (Image img in childImages)
-                    {
-                        if (img.gameObject.name == "ItemBackground")
-                        {
-                            bgImage = img;
-                            break;
-                        }
-                    }
-                }
-                
-                slotBackgrounds[i] = bgImage;
-                if (bgImage != null)
-                {
-                    originalColors[i] = bgImage.color;
-                }
-                else
-                {
-                    Debug.LogWarning($"ItemBackground Image component not found for slot {i}");
-                }
-            }
-        }
+        // No longer needed - highlighting is handled by ItemSlot components
     }
     
     private void HandleInput()
@@ -116,9 +71,13 @@ public class Hotbar : MonoBehaviour
         
         // Get item name for debug log
         string itemName = "Empty";
-        if (itemSlots[slotIndex] != null && itemSlots[slotIndex].GetItemData() != null)
+        if (itemSlots[slotIndex] != null && itemSlots[slotIndex].GetItemController() != null)
         {
-            itemName = itemSlots[slotIndex].GetItemData().ItemName;
+            UI_Item itemData = itemSlots[slotIndex].GetItemController().GetItemData();
+            if (itemData != null)
+            {
+                itemName = itemData.ItemName;
+            }
         }
         
         Debug.Log($"Selected hotbar slot {slotIndex + 1} - {itemName}");
@@ -126,24 +85,12 @@ public class Hotbar : MonoBehaviour
     
     private void UpdateSlotHighlight(int slotIndex, bool isSelected)
     {
-        if (slotIndex < 0 || slotIndex >= slotBackgrounds.Length) return;
+        if (slotIndex < 0 || slotIndex >= itemSlots.Length) return;
         
-        Image bgImage = slotBackgrounds[slotIndex];
-        if (bgImage == null) return;
-        
-        if (isSelected)
+        ItemSlot slot = itemSlots[slotIndex];
+        if (slot != null)
         {
-            // Highlight the selected slot
-            Color newColor = highlightColor;
-            newColor.a = highlightAlpha;
-            bgImage.color = newColor;
-        }
-        else
-        {
-            // Return to normal color
-            Color newColor = normalColor;
-            newColor.a = normalAlpha;
-            bgImage.color = newColor;
+            slot.SetHotbarSelected(isSelected, highlightColor, normalColor, highlightAlpha, normalAlpha);
         }
     }
     
@@ -153,7 +100,7 @@ public class Hotbar : MonoBehaviour
         return selectedSlotIndex;
     }
     
-    public UI_ItemController GetSelectedSlot()
+    public ItemSlot GetSelectedSlot()
     {
         if (selectedSlotIndex >= 0 && selectedSlotIndex < itemSlots.Length)
         {
@@ -162,7 +109,7 @@ public class Hotbar : MonoBehaviour
         return null;
     }
     
-    public UI_ItemController GetSlot(int index)
+    public ItemSlot GetSlot(int index)
     {
         if (index >= 0 && index < itemSlots.Length)
         {
@@ -173,7 +120,11 @@ public class Hotbar : MonoBehaviour
     
     public UI_Item GetSelectedItem()
     {
-        UI_ItemController selectedSlot = GetSelectedSlot();
-        return selectedSlot?.GetItemData();
+        ItemSlot selectedSlot = GetSelectedSlot();
+        if (selectedSlot != null && selectedSlot.GetItemController() != null)
+        {
+            return selectedSlot.GetItemController().GetItemData();
+        }
+        return null;
     }
 }
