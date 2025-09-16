@@ -1,0 +1,702 @@
+fileFormatVersion: 2
+guid: 80bb07ecd8e6b7f44848f1a36038cb04
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1199208156209405198
+    second: Medium_shirt_walk_0
+  - first:
+      213: -7440929792107618006
+    second: Medium_shirt_walk_1
+  - first:
+      213: 6461183572897200315
+    second: Medium_shirt_walk_2
+  - first:
+      213: 8265551651888129934
+    second: Medium_shirt_walk_3
+  - first:
+      213: -7230555803850926361
+    second: Medium_shirt_walk_4
+  - first:
+      213: -1172954409005787280
+    second: Medium_shirt_walk_5
+  - first:
+      213: -2758528075074675811
+    second: Medium_shirt_walk_6
+  - first:
+      213: 4179530738689590751
+    second: Medium_shirt_walk_7
+  - first:
+      213: 5589540100886305576
+    second: Medium_shirt_walk_8
+  - first:
+      213: -7368223706846224641
+    second: Medium_shirt_walk_9
+  - first:
+      213: 9115816497975511178
+    second: Medium_shirt_walk_10
+  - first:
+      213: 2774953523886995017
+    second: Medium_shirt_walk_11
+  - first:
+      213: 1235149733491586431
+    second: Medium_shirt_walk_12
+  - first:
+      213: 7900858750067212551
+    second: Medium_shirt_walk_13
+  - first:
+      213: 7430331826455488327
+    second: Medium_shirt_walk_14
+  - first:
+      213: -1335593040953750500
+    second: Medium_shirt_walk_15
+  - first:
+      213: 6824505656449869815
+    second: Medium_shirt_walk_16
+  - first:
+      213: -5832794510840555647
+    second: Medium_shirt_walk_17
+  - first:
+      213: -76284492780565067
+    second: Medium_shirt_walk_18
+  - first:
+      213: 3581245675090808237
+    second: Medium_shirt_walk_19
+  - first:
+      213: 9211021418634781224
+    second: Medium_shirt_walk_20
+  - first:
+      213: 2505046522441338187
+    second: Medium_shirt_walk_21
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Medium_shirt_walk_0
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 149
+        width: 18
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e0ddc92e67174a010800000000000000
+      internalID: 1199208156209405198
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_1
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 149
+        width: 22
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a21edce17c18cb890800000000000000
+      internalID: -7440929792107618006
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_2
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 149
+        width: 18
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb8702b0a3cbaa950800000000000000
+      internalID: 6461183572897200315
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_3
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 149
+        width: 22
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e876f634f6325b270800000000000000
+      internalID: 8265551651888129934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_4
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 101
+        width: 16
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e693d63ec7e7ab90800000000000000
+      internalID: -7230555803850926361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_5
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 101
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0775b79fd24d8bfe0800000000000000
+      internalID: -1172954409005787280
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_6
+      rect:
+        serializedVersion: 2
+        x: 47
+        y: 99
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d9b5b3eb45db7b9d0800000000000000
+      internalID: -2758528075074675811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_7
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 101
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd54b6f001da00a30800000000000000
+      internalID: 4179530738689590751
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_8
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 101
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 82b112b6b19029d40800000000000000
+      internalID: 5589540100886305576
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_9
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 101
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffe91dfb39fceb990800000000000000
+      internalID: -7368223706846224641
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_10
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 99
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a88c977aec2e18e70800000000000000
+      internalID: 9115816497975511178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_11
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 53
+        width: 16
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 946b083178d928620800000000000000
+      internalID: 2774953523886995017
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_12
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 51
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f753f257322242110800000000000000
+      internalID: 1235149733491586431
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_13
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 53
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7010b423c2d75ad60800000000000000
+      internalID: 7900858750067212551
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_14
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 53
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 747a827bd67dd1760800000000000000
+      internalID: 7430331826455488327
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_15
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 53
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1cc77d9435077de0800000000000000
+      internalID: -1335593040953750500
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_16
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 51
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f7a65c9cb385be50800000000000000
+      internalID: 6824505656449869815
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_17
+      rect:
+        serializedVersion: 2
+        x: 113
+        y: 53
+        width: 8
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 187108dbb40cd0fa0800000000000000
+      internalID: -5832794510840555647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_18
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 5
+        width: 18
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5bd81f178abf0fef0800000000000000
+      internalID: -76284492780565067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_19
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 5
+        width: 22
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dad013d97f323b130800000000000000
+      internalID: 3581245675090808237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_20
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 5
+        width: 18
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 822ad3c9d2f14df70800000000000000
+      internalID: 9211021418634781224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_walk_21
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 5
+        width: 22
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b4d81f33a86b3c220800000000000000
+      internalID: 2505046522441338187
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Medium_shirt_walk_0: 1199208156209405198
+      Medium_shirt_walk_1: -7440929792107618006
+      Medium_shirt_walk_10: 9115816497975511178
+      Medium_shirt_walk_11: 2774953523886995017
+      Medium_shirt_walk_12: 1235149733491586431
+      Medium_shirt_walk_13: 7900858750067212551
+      Medium_shirt_walk_14: 7430331826455488327
+      Medium_shirt_walk_15: -1335593040953750500
+      Medium_shirt_walk_16: 6824505656449869815
+      Medium_shirt_walk_17: -5832794510840555647
+      Medium_shirt_walk_18: -76284492780565067
+      Medium_shirt_walk_19: 3581245675090808237
+      Medium_shirt_walk_2: 6461183572897200315
+      Medium_shirt_walk_20: 9211021418634781224
+      Medium_shirt_walk_21: 2505046522441338187
+      Medium_shirt_walk_3: 8265551651888129934
+      Medium_shirt_walk_4: -7230555803850926361
+      Medium_shirt_walk_5: -1172954409005787280
+      Medium_shirt_walk_6: -2758528075074675811
+      Medium_shirt_walk_7: 4179530738689590751
+      Medium_shirt_walk_8: 5589540100886305576
+      Medium_shirt_walk_9: -7368223706846224641
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
