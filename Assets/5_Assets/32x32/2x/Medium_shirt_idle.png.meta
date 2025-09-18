@@ -1,0 +1,754 @@
+fileFormatVersion: 2
+guid: 72d293582c2e1c4408e645561ace4e84
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5112738855034753115
+    second: Medium_shirt_idle_0
+  - first:
+      213: 8046344410827578222
+    second: Medium_shirt_idle_1
+  - first:
+      213: 292924630350185145
+    second: Medium_shirt_idle_2
+  - first:
+      213: 1980208595795476809
+    second: Medium_shirt_idle_3
+  - first:
+      213: -8430588820668602541
+    second: Medium_shirt_idle_4
+  - first:
+      213: -770593597855456399
+    second: Medium_shirt_idle_5
+  - first:
+      213: 7485575668523539360
+    second: Medium_shirt_idle_6
+  - first:
+      213: 1338751399078714380
+    second: Medium_shirt_idle_7
+  - first:
+      213: 7103264268453753013
+    second: Medium_shirt_idle_8
+  - first:
+      213: -4109979227082299955
+    second: Medium_shirt_idle_9
+  - first:
+      213: -6611487638203676249
+    second: Medium_shirt_idle_10
+  - first:
+      213: 8976510094673590288
+    second: Medium_shirt_idle_11
+  - first:
+      213: 2853720651882941110
+    second: Medium_shirt_idle_12
+  - first:
+      213: 8605018181604301656
+    second: Medium_shirt_idle_13
+  - first:
+      213: 3884622785305026451
+    second: Medium_shirt_idle_14
+  - first:
+      213: -4839286169807084521
+    second: Medium_shirt_idle_15
+  - first:
+      213: -6750236344117355326
+    second: Medium_shirt_idle_16
+  - first:
+      213: 6062074004221762759
+    second: Medium_shirt_idle_17
+  - first:
+      213: 6132818012661584830
+    second: Medium_shirt_idle_18
+  - first:
+      213: -2507049957173924283
+    second: Medium_shirt_idle_19
+  - first:
+      213: -7465435344685282720
+    second: Medium_shirt_idle_20
+  - first:
+      213: -622842570409706616
+    second: Medium_shirt_idle_21
+  - first:
+      213: 3052743689080546875
+    second: Medium_shirt_idle_22
+  - first:
+      213: 6818195834485294170
+    second: Medium_shirt_idle_23
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Medium_shirt_idle_0
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 149
+        width: 22
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5afe05c8917eb09b0800000000000000
+      internalID: -5112738855034753115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_1
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 149
+        width: 22
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6bd3db3c9b5aaf60800000000000000
+      internalID: 8046344410827578222
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_2
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 149
+        width: 22
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9b24cf9366da01400800000000000000
+      internalID: 292924630350185145
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_3
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 149
+        width: 22
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 941809de93d1b7b10800000000000000
+      internalID: 1980208595795476809
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_4
+      rect:
+        serializedVersion: 2
+        x: 7
+        y: 101
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3572ba08228800b80800000000000000
+      internalID: -8430588820668602541
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_5
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 101
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 173a2ad943d4e45f0800000000000000
+      internalID: -770593597855456399
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_6
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 101
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0ab17a5096b12e760800000000000000
+      internalID: 7485575668523539360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_7
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 101
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c0cd4a0fd43349210800000000000000
+      internalID: 1338751399078714380
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_8
+      rect:
+        serializedVersion: 2
+        x: 71
+        y: 101
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b039eaa73dd39260800000000000000
+      internalID: 7103264268453753013
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_9
+      rect:
+        serializedVersion: 2
+        x: 77
+        y: 99
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc566872bab66f6c0800000000000000
+      internalID: -4109979227082299955
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_10
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 101
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a9cbffa5074f34a0800000000000000
+      internalID: -6611487638203676249
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_11
+      rect:
+        serializedVersion: 2
+        x: 109
+        y: 99
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0183abb1f58f29c70800000000000000
+      internalID: 8976510094673590288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_12
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 53
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bacdaf20d37a9720800000000000000
+      internalID: 2853720651882941110
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_13
+      rect:
+        serializedVersion: 2
+        x: 19
+        y: 53
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 85b5d40e17a2b6770800000000000000
+      internalID: 8605018181604301656
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_14
+      rect:
+        serializedVersion: 2
+        x: 43
+        y: 53
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 39f9e7477d3f8e530800000000000000
+      internalID: 3884622785305026451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_15
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 53
+        width: 6
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71420324ed667dcb0800000000000000
+      internalID: -4839286169807084521
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_16
+      rect:
+        serializedVersion: 2
+        x: 75
+        y: 51
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2cc14fe2fc75252a0800000000000000
+      internalID: -6750236344117355326
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_17
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 53
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7cc94c74030d02450800000000000000
+      internalID: 6062074004221762759
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_18
+      rect:
+        serializedVersion: 2
+        x: 107
+        y: 51
+        width: 8
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eb39fcc4d752c1550800000000000000
+      internalID: 6132818012661584830
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_19
+      rect:
+        serializedVersion: 2
+        x: 115
+        y: 53
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 54e6d7cc85b253dd0800000000000000
+      internalID: -2507049957173924283
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_20
+      rect:
+        serializedVersion: 2
+        x: 5
+        y: 5
+        width: 22
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 06a436a8b12756890800000000000000
+      internalID: -7465435344685282720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_21
+      rect:
+        serializedVersion: 2
+        x: 37
+        y: 5
+        width: 22
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88bfcbf6bf73b57f0800000000000000
+      internalID: -622842570409706616
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_22
+      rect:
+        serializedVersion: 2
+        x: 69
+        y: 5
+        width: 22
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b3626f906368d5a20800000000000000
+      internalID: 3052743689080546875
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Medium_shirt_idle_23
+      rect:
+        serializedVersion: 2
+        x: 101
+        y: 5
+        width: 22
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a544b83bcf81f9e50800000000000000
+      internalID: 6818195834485294170
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Medium_shirt_idle_0: -5112738855034753115
+      Medium_shirt_idle_1: 8046344410827578222
+      Medium_shirt_idle_10: -6611487638203676249
+      Medium_shirt_idle_11: 8976510094673590288
+      Medium_shirt_idle_12: 2853720651882941110
+      Medium_shirt_idle_13: 8605018181604301656
+      Medium_shirt_idle_14: 3884622785305026451
+      Medium_shirt_idle_15: -4839286169807084521
+      Medium_shirt_idle_16: -6750236344117355326
+      Medium_shirt_idle_17: 6062074004221762759
+      Medium_shirt_idle_18: 6132818012661584830
+      Medium_shirt_idle_19: -2507049957173924283
+      Medium_shirt_idle_2: 292924630350185145
+      Medium_shirt_idle_20: -7465435344685282720
+      Medium_shirt_idle_21: -622842570409706616
+      Medium_shirt_idle_22: 3052743689080546875
+      Medium_shirt_idle_23: 6818195834485294170
+      Medium_shirt_idle_3: 1980208595795476809
+      Medium_shirt_idle_4: -8430588820668602541
+      Medium_shirt_idle_5: -770593597855456399
+      Medium_shirt_idle_6: 7485575668523539360
+      Medium_shirt_idle_7: 1338751399078714380
+      Medium_shirt_idle_8: 7103264268453753013
+      Medium_shirt_idle_9: -4109979227082299955
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
