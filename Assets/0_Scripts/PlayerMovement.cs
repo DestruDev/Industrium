@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
             // Stop movement if player is dead
             inputVector = Vector2.zero;
         }
+        
     }
     
     void FixedUpdate()
