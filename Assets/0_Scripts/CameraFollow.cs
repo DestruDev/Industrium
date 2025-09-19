@@ -8,6 +8,7 @@ public class CameraFollow : MonoBehaviour
     public float smoothSpeed = 0.125f;
     public float zoomSpeed = 5f;
     public float mouseWheelSensitivity = 5f;
+    public float defaultZoom = 5f;
     public float minZoom = 2f;
     public float maxZoom = 10f;
     private Camera cam;
@@ -15,6 +16,12 @@ public class CameraFollow : MonoBehaviour
     void Start()
     {
         cam = GetComponent<Camera>();
+        
+        // Set the camera to the default zoom level
+        if (cam != null)
+        {
+            cam.orthographicSize = defaultZoom;
+        }
     }
 
     // Update is called once per frame

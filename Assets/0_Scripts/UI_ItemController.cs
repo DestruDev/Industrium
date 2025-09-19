@@ -42,6 +42,7 @@ public class UI_ItemController : MonoBehaviour, IPointerEnterHandler, IPointerEx
             {
                 itemImage.sprite = itemData.Image;
                 itemImage.color = new Color(1, 1, 1, 1); // Make visible and fully opaque
+                itemImage.type = Image.Type.Simple; // Ensure Simple type
             }
             else
             {
