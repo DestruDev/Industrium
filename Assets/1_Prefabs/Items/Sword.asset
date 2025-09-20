@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 1
   itemName: Sword
   itemType: 0
-  image: {fileID: -452592169473856734, guid: 64886ca93679074429c09d988f017202, type: 3}
+  image: {fileID: -1567503690, guid: 2b8e238165b55a94faa8ee8089ca662e, type: 3}
   groundSprite: {fileID: 0}
   groundScale: {x: 1, y: 1, z: 1}
   hasCollider: 1
