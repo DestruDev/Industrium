@@ -32,11 +32,8 @@ public class PixelPerfectCamera : MonoBehaviour
     {
         if (cam == null) return;
         
-        // Calculate the correct orthographic size for pixel perfect rendering
-        float pixelPerfectSize = (referenceResolution / (float)pixelsPerUnit) * 0.5f;
-        cam.orthographicSize = pixelPerfectSize;
-        
-        // Ensure camera position is snapped to pixel boundaries
+        // Don't override the camera's orthographic size - let CameraFollow control it
+        // Just ensure camera position is snapped to pixel boundaries
         SnapCameraToPixelPerfect();
     }
     
@@ -57,9 +54,7 @@ public class PixelPerfectCamera : MonoBehaviour
         // Apply snapped position
         transform.position = new Vector3(snappedX, snappedY, cameraPos.z);
         
-        // Also snap the orthographic size to ensure clean rendering
-        float snappedSize = Mathf.Round(cam.orthographicSize * pixelsPerUnit) / pixelsPerUnit;
-        cam.orthographicSize = snappedSize;
+        // Don't modify orthographic size - let CameraFollow control it
     }
     
     // Public method to update pixel perfect settings at runtime
@@ -79,16 +74,12 @@ public class PixelPerfectCamera : MonoBehaviour
     {
         enablePixelPerfect = enabled;
         
-        if (!enabled && cam != null)
-        {
-            // Restore original orthographic size when disabling
-            cam.orthographicSize = originalOrthographicSize;
-        }
-        else if (enabled && cam != null)
+        if (enabled && cam != null)
         {
             // Reapply pixel perfect settings when enabling
             ApplyPixelPerfectSettings();
         }
+        // No need to restore orthographic size since we don't modify it
     }
     
     // Getters for inspector
