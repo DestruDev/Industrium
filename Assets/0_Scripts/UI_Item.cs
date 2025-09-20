@@ -13,15 +13,27 @@ public enum ItemCategory
     Consumable
 }
 
-public enum EquipmentSubcategory
-{
-    Top,
-    Bottom,
-    Jewelry,
-    Helmet,
-    Shoes,
-    Glove
-}
+    public enum EquipmentSubcategory
+    {
+        Top,
+        Bottom,
+        Jewelry,
+        Helmet,
+        Shoes,
+        Glove
+    }
+
+    public enum StructureSubcategory
+    {
+        Size1x1,
+        Size1x2,
+        Size2x1,
+        Size2x2,
+        Size2x3,
+        Size3x1,
+        Size3x2,
+        Size3x3
+    }
 
 [CreateAssetMenu(fileName = "New Item", menuName = "Scriptable Objects/UI_Item")]
 public class UI_Item : ScriptableObject
@@ -32,6 +44,7 @@ public class UI_Item : ScriptableObject
     [SerializeField] private ItemType itemType = ItemType.UI;
     [SerializeField] private ItemCategory itemCategory = ItemCategory.Equipment;
     [SerializeField] private EquipmentSubcategory equipmentSubcategory = EquipmentSubcategory.Top;
+    [SerializeField] private StructureSubcategory structureSubcategory = StructureSubcategory.Size1x1;
     [SerializeField] private bool stackable;
     [SerializeField] private bool placeable;
 
@@ -51,6 +64,7 @@ public class UI_Item : ScriptableObject
     public ItemType ItemType => itemType;
     public ItemCategory ItemCategory => itemCategory;
     public EquipmentSubcategory EquipmentSubcategory => equipmentSubcategory;
+    public StructureSubcategory StructureSubcategory => structureSubcategory;
     public bool Stackable => stackable;
     public bool Placeable => placeable;
     public Sprite Image => image;
@@ -59,6 +73,16 @@ public class UI_Item : ScriptableObject
     public bool HasCollider => hasCollider;
     public bool IsTrigger => isTrigger;
     public float PickupRadius => pickupRadius;
+    
+    // Validation method to ensure proper settings based on item category
+    private void OnValidate()
+    {
+        if (itemCategory == ItemCategory.Structure)
+        {
+            stackable = false;
+            placeable = true;
+        }
+    }
     
     // Helper methods for working with different item types
     public Sprite GetDisplaySprite()
@@ -122,11 +146,61 @@ public class UI_Item : ScriptableObject
     {
         return itemCategory == ItemCategory.Equipment && equipmentSubcategory == EquipmentSubcategory.Glove;
     }
+
+    // Structure subcategory helper methods
+    public bool IsSize1x1()
+    {
+        return itemCategory == ItemCategory.Structure && structureSubcategory == StructureSubcategory.Size1x1;
+    }
+
+    public bool IsSize1x2()
+    {
+        return itemCategory == ItemCategory.Structure && structureSubcategory == StructureSubcategory.Size1x2;
+    }
+
+    public bool IsSize2x1()
+    {
+        return itemCategory == ItemCategory.Structure && structureSubcategory == StructureSubcategory.Size2x1;
+    }
+
+    public bool IsSize2x2()
+    {
+        return itemCategory == ItemCategory.Structure && structureSubcategory == StructureSubcategory.Size2x2;
+    }
+
+    public bool IsSize2x3()
+    {
+        return itemCategory == ItemCategory.Structure && structureSubcategory == StructureSubcategory.Size2x3;
+    }
+
+    public bool IsSize3x1()
+    {
+        return itemCategory == ItemCategory.Structure && structureSubcategory == StructureSubcategory.Size3x1;
+    }
+
+    public bool IsSize3x2()
+    {
+        return itemCategory == ItemCategory.Structure && structureSubcategory == StructureSubcategory.Size3x2;
+    }
+
+    public bool IsSize3x3()
+    {
+        return itemCategory == ItemCategory.Structure && structureSubcategory == StructureSubcategory.Size3x3;
+    }
     
     // Optional: Override ToString for debugging
     public override string ToString()
     {
-        string subcategoryInfo = itemCategory == ItemCategory.Equipment ? $", Subcategory: {equipmentSubcategory}" : "";
+        string subcategoryInfo = "";
+        if (itemCategory == ItemCategory.Equipment)
+        {
+            subcategoryInfo = $", Subcategory: {equipmentSubcategory}";
+        }
+        else if (itemCategory == ItemCategory.Structure)
+        {
+            subcategoryInfo = $", Subcategory: {structureSubcategory}";
+        }
+        
         return $"UI_Item: {itemName} (ID: {id}, Type: {itemType}, Category: {itemCategory}{subcategoryInfo})";
     }
 }

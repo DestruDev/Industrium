@@ -9,6 +9,7 @@ public class UI_ItemEditor : Editor
     private SerializedProperty itemType;
     private SerializedProperty itemCategory;
     private SerializedProperty equipmentSubcategory;
+    private SerializedProperty structureSubcategory;
     private SerializedProperty stackable;
     private SerializedProperty placeable;
     private SerializedProperty image;
@@ -25,6 +26,7 @@ public class UI_ItemEditor : Editor
         itemType = serializedObject.FindProperty("itemType");
         itemCategory = serializedObject.FindProperty("itemCategory");
         equipmentSubcategory = serializedObject.FindProperty("equipmentSubcategory");
+        structureSubcategory = serializedObject.FindProperty("structureSubcategory");
         stackable = serializedObject.FindProperty("stackable");
         placeable = serializedObject.FindProperty("placeable");
         image = serializedObject.FindProperty("image");
@@ -51,6 +53,11 @@ public class UI_ItemEditor : Editor
         if (itemCategory.enumValueIndex == 0) // 0 = Equipment
         {
             EditorGUILayout.PropertyField(equipmentSubcategory);
+        }
+        // Only show structure subcategory if item category is Structure
+        else if (itemCategory.enumValueIndex == 1) // 1 = Structure
+        {
+            EditorGUILayout.PropertyField(structureSubcategory);
         }
         
         EditorGUILayout.PropertyField(stackable);
