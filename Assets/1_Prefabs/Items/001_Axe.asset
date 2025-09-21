@@ -15,9 +15,10 @@ MonoBehaviour:
   id: 1
   itemName: Axe
   itemType: 0
-  itemCategory: 0
+  itemCategory: 3
   equipmentSubcategory: 0
   structureSubcategory: 0
+  toolSubcategory: 1
   stackable: 0
   placeable: 0
   image: {fileID: -1372997902, guid: 2b8e238165b55a94faa8ee8089ca662e, type: 3}
