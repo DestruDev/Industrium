@@ -641,6 +641,161 @@ public class GridMap : MonoBehaviour
     }
     #endregion
     
+    #region Structure Placement
+    /// <summary>
+    /// Place a structure at the specified grid position
+    /// </summary>
+    /// <param name="gridPosition">Grid position to place the structure</param>
+    /// <param name="structureSize">Size of the structure (width x height)</param>
+    /// <param name="structureItem">The structure item data</param>
+    /// <param name="layer">Which tilemap layer to place on</param>
+    /// <returns>True if placement was successful</returns>
+    public bool PlaceStructure(Vector2Int gridPosition, Vector2Int structureSize, UI_Item structureItem, TilemapLayer layer = TilemapLayer.StructuresCollision)
+    {
+        // Validate placement
+        if (!CanPlaceStructure(gridPosition, structureSize))
+        {
+            Debug.LogWarning($"Cannot place structure at {gridPosition} with size {structureSize}");
+            return false;
+        }
+        
+        // Get the appropriate tilemap
+        Tilemap targetTilemap = GetTilemapByLayer(layer);
+        if (targetTilemap == null)
+        {
+            Debug.LogError($"No tilemap found for layer: {layer}");
+            return false;
+        }
+        
+        // Place tiles for the structure
+        for (int x = 0; x < structureSize.x; x++)
+        {
+            for (int y = 0; y < structureSize.y; y++)
+            {
+                Vector2Int tilePos = gridPosition + new Vector2Int(x, y);
+                Vector3Int tilemapPos = GridToTilemap(tilePos);
+                
+                // Place the tile (you'll need to create a tile asset from the structure item)
+                TileBase structureTile = CreateTileFromStructureItem(structureItem);
+                targetTilemap.SetTile(tilemapPos, structureTile);
+                
+                // Update grid data
+                if (IsValidGridPosition(tilePos))
+                {
+                    gridData[tilePos.x, tilePos.y].SetTile(structureTile, layer);
+                }
+            }
+        }
+        
+        if (showDebugInfo)
+        {
+            Debug.Log($"Placed structure {structureItem.ItemName} at {gridPosition} with size {structureSize} on layer {layer}");
+        }
+        
+        return true;
+    }
+    
+    /// <summary>
+    /// Check if a structure can be placed at the specified position
+    /// </summary>
+    /// <param name="gridPosition">Grid position to check</param>
+    /// <param name="structureSize">Size of the structure</param>
+    /// <returns>True if the structure can be placed</returns>
+    public bool CanPlaceStructure(Vector2Int gridPosition, Vector2Int structureSize)
+    {
+        // Check if all required cells are within bounds and clear
+        for (int x = 0; x < structureSize.x; x++)
+        {
+            for (int y = 0; y < structureSize.y; y++)
+            {
+                Vector2Int checkPos = gridPosition + new Vector2Int(x, y);
+                
+                // Check bounds
+                if (!IsValidGridPosition(checkPos))
+                {
+                    return false;
+                }
+                
+                // Check for collision structures
+                if (HasCollisionStructure(checkPos))
+                {
+                    return false;
+                }
+                
+                // Check for ground (structures need ground to be placed on)
+                if (!HasGroundAt(checkPos))
+                {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    /// <summary>
+    /// Remove a structure from the specified position
+    /// </summary>
+    /// <param name="gridPosition">Grid position to remove from</param>
+    /// <param name="structureSize">Size of the structure to remove</param>
+    /// <param name="layer">Which tilemap layer to remove from</param>
+    /// <returns>True if removal was successful</returns>
+    public bool RemoveStructure(Vector2Int gridPosition, Vector2Int structureSize, TilemapLayer layer = TilemapLayer.StructuresCollision)
+    {
+        // Get the appropriate tilemap
+        Tilemap targetTilemap = GetTilemapByLayer(layer);
+        if (targetTilemap == null)
+        {
+            Debug.LogError($"No tilemap found for layer: {layer}");
+            return false;
+        }
+        
+        // Remove tiles for the structure
+        for (int x = 0; x < structureSize.x; x++)
+        {
+            for (int y = 0; y < structureSize.y; y++)
+            {
+                Vector2Int tilePos = gridPosition + new Vector2Int(x, y);
+                Vector3Int tilemapPos = GridToTilemap(tilePos);
+                
+                // Remove the tile
+                targetTilemap.SetTile(tilemapPos, null);
+                
+                // Update grid data
+                if (IsValidGridPosition(tilePos))
+                {
+                    gridData[tilePos.x, tilePos.y].ClearTile(layer);
+                }
+            }
+        }
+        
+        if (showDebugInfo)
+        {
+            Debug.Log($"Removed structure at {gridPosition} with size {structureSize} from layer {layer}");
+        }
+        
+        return true;
+    }
+    
+    /// <summary>
+    /// Create a TileBase from a structure item (placeholder implementation)
+    /// </summary>
+    /// <param name="structureItem">The structure item to convert</param>
+    /// <returns>A TileBase for the structure</returns>
+    private TileBase CreateTileFromStructureItem(UI_Item structureItem)
+    {
+        // This is a placeholder - you'll need to implement this based on your tile system
+        // For now, return null which will create empty tiles
+        // You might want to:
+        // 1. Create a mapping from structure items to tile assets
+        // 2. Generate tiles procedurally from the structure item's sprite
+        // 3. Use a tile database system
+        
+        Debug.LogWarning($"CreateTileFromStructureItem not implemented for {structureItem.ItemName}");
+        return null;
+    }
+    #endregion
+    
     #region Getters
     public Vector2Int GetGridSize() => gridSize;
     public float GetCellSize() => cellSize;

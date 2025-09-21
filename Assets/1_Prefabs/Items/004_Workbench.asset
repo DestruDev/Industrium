@@ -17,7 +17,7 @@ MonoBehaviour:
   itemType: 0
   itemCategory: 1
   equipmentSubcategory: 0
-  structureSubcategory: 3
+  structureSubcategory: 0
   toolSubcategory: 0
   stackable: 0
   placeable: 1
