@@ -2,11 +2,19 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+public enum SlotType
+{
+    Inventory,
+    Hotbar,
+    Equipment
+}
+
 public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
     [Header("Slot Settings")]
-    [SerializeField] private bool isHotbarSlot = false;
-    [SerializeField] private bool isInventorySlot = true;
+    [SerializeField] private SlotType slotType = SlotType.Inventory;
+    [SerializeField] private EquipmentSubcategory equipmentSlotType = EquipmentSubcategory.Top;
+    
     
     [Header("Click Settings")]
     [SerializeField] private Canvas canvas;
@@ -95,6 +103,13 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
         if (pickedUpSlot == null || pickedUpItemData == null)
             return;
             
+        // Check if this slot can accept the item
+        if (!CanAcceptItem(pickedUpItemData))
+        {
+            Debug.LogWarning($"Cannot place {pickedUpItemData.ItemName} in this slot!");
+            return;
+        }
+            
         // Get the current item in this slot
         UI_Item currentItem = itemController?.GetItemData();
         
@@ -163,6 +178,14 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
         {
             return inventory.IsInventoryOpen();
         }
+        
+        // For equipment slots, we might want different behavior
+        // For now, return true so equipment slots work when inventory is closed
+        if (slotType == SlotType.Equipment)
+        {
+            return true;
+        }
+        
         return false;
     }
     
@@ -318,7 +341,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
     
     private void UpdateHotbarHighlight(Color highlightColor, Color normalColor, float highlightAlpha, float normalAlpha)
     {
-        if (borderImage != null && isHotbarSlot)
+        if (borderImage != null && slotType == SlotType.Hotbar)
         {
             if (isHotbarSelected)
             {
@@ -350,9 +373,35 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
     
     public bool CanAcceptItem(UI_Item item)
     {
-        // For now, accept all items
-        // You can add restrictions here later (e.g., only certain item types)
-        return item != null;
+        if (item == null) return false;
+        
+        // Equipment slots have special validation
+        if (slotType == SlotType.Equipment)
+        {
+            // Only accept equipment items
+            if (item.ItemCategory != ItemCategory.Equipment) 
+            {
+                Debug.LogWarning($"Equipment slot {gameObject.name} rejected {item.ItemName}: Not an equipment item");
+                return false;
+            }
+            
+            // Check if the item's subcategory matches this slot's type
+            bool canAccept = item.EquipmentSubcategory == equipmentSlotType;
+            
+            if (!canAccept)
+            {
+                Debug.LogWarning($"Equipment slot {gameObject.name} (Type: {equipmentSlotType}) rejected {item.ItemName} (Type: {item.EquipmentSubcategory})");
+            }
+            else
+            {
+                Debug.Log($"Equipment slot {gameObject.name} accepted {item.ItemName} (Type: {item.EquipmentSubcategory})");
+            }
+            
+            return canAccept;
+        }
+        
+        // For hotbar and inventory slots, accept all items
+        return true;
     }
     
     public void ReceiveItem(UI_ItemController draggedController)
@@ -388,8 +437,11 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
     #endregion
     
     #region Getters
-    public bool IsHotbarSlot() => isHotbarSlot;
-    public bool IsInventorySlot() => isInventorySlot;
+    public bool IsHotbarSlot() => slotType == SlotType.Hotbar;
+    public bool IsInventorySlot() => slotType == SlotType.Inventory;
+    public bool IsEquipmentSlot() => slotType == SlotType.Equipment;
+    public SlotType GetSlotType() => slotType;
+    public EquipmentSubcategory GetEquipmentSlotType() => equipmentSlotType;
     public UI_ItemController GetItemController() => itemController;
     public bool IsPickedUp() => pickedUpSlot != null;
     public bool IsHotbarSelected() => isHotbarSelected;

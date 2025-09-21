@@ -31,6 +31,12 @@ public class Hotbar : MonoBehaviour
     
     private void HandleInput()
     {
+        // Don't handle hotbar input if admin console is open
+        if (IsAdminConsoleOpen())
+        {
+            return;
+        }
+        
         // Check for number key inputs (1-8)
         for (int i = 0; i < 8; i++)
         {
@@ -126,5 +132,19 @@ public class Hotbar : MonoBehaviour
             return selectedSlot.GetItemController().GetItemData();
         }
         return null;
+    }
+    
+    /// <summary>
+    /// Check if the admin console is currently open
+    /// </summary>
+    /// <returns>True if admin console is open, false otherwise</returns>
+    private bool IsAdminConsoleOpen()
+    {
+        AdminConsole adminConsole = FindFirstObjectByType<AdminConsole>();
+        if (adminConsole != null && adminConsole.adminPanel != null)
+        {
+            return adminConsole.adminPanel.activeSelf;
+        }
+        return false;
     }
 }

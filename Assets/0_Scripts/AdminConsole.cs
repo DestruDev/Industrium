@@ -70,6 +70,13 @@ public class AdminConsole : MonoBehaviour
         // Try to parse the input as an integer
         if (int.TryParse(inputText, out int itemID))
         {
+            // Debug: Show available item IDs
+            if (ItemManager.Instance != null)
+            {
+                int[] availableIDs = ItemManager.Instance.GetAllItemIDs();
+                Debug.Log($"Available item IDs: [{string.Join(", ", availableIDs)}]");
+            }
+            
             bool success = inventory.SpawnItemByID(itemID);
             
             if (success)

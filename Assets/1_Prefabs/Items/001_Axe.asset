@@ -10,12 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91484c367cbf9c849a59c95d174708ed, type: 3}
-  m_Name: Sword
+  m_Name: 001_Axe
   m_EditorClassIdentifier: 
   id: 1
-  itemName: Sword
+  itemName: Axe
   itemType: 0
-  image: {fileID: -1567503690, guid: 2b8e238165b55a94faa8ee8089ca662e, type: 3}
+  itemCategory: 0
+  equipmentSubcategory: 0
+  structureSubcategory: 0
+  stackable: 0
+  placeable: 0
+  image: {fileID: -1372997902, guid: 2b8e238165b55a94faa8ee8089ca662e, type: 3}
   groundSprite: {fileID: 0}
   groundScale: {x: 1, y: 1, z: 1}
   hasCollider: 1

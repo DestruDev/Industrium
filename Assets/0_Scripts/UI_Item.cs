@@ -17,10 +17,10 @@ public enum ItemCategory
     {
         Top,
         Bottom,
-        Jewelry,
-        Helmet,
         Shoes,
-        Glove
+        Helmet,
+        Glove,
+        Jewelry
     }
 
     public enum StructureSubcategory
@@ -81,6 +81,10 @@ public class UI_Item : ScriptableObject
         {
             stackable = false;
             placeable = true;
+        }
+        else if (itemCategory == ItemCategory.Equipment || itemCategory == ItemCategory.Consumable)
+        {
+            placeable = false;
         }
     }
     
