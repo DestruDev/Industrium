@@ -10,7 +10,8 @@ public enum ItemCategory
 {
     Equipment,
     Structure,
-    Consumable
+    Consumable,
+    Tool
 }
 
     public enum EquipmentSubcategory
@@ -35,6 +36,12 @@ public enum ItemCategory
         Size3x3
     }
 
+    public enum ToolSubcategory
+    {
+        Weapon,
+        Tool
+    }
+
 [CreateAssetMenu(fileName = "New Item", menuName = "Scriptable Objects/UI_Item")]
 public class UI_Item : ScriptableObject
 {
@@ -45,6 +52,7 @@ public class UI_Item : ScriptableObject
     [SerializeField] private ItemCategory itemCategory = ItemCategory.Equipment;
     [SerializeField] private EquipmentSubcategory equipmentSubcategory = EquipmentSubcategory.Top;
     [SerializeField] private StructureSubcategory structureSubcategory = StructureSubcategory.Size1x1;
+    [SerializeField] private ToolSubcategory toolSubcategory = ToolSubcategory.Weapon;
     [SerializeField] private bool stackable;
     [SerializeField] private bool placeable;
 
@@ -65,6 +73,7 @@ public class UI_Item : ScriptableObject
     public ItemCategory ItemCategory => itemCategory;
     public EquipmentSubcategory EquipmentSubcategory => equipmentSubcategory;
     public StructureSubcategory StructureSubcategory => structureSubcategory;
+    public ToolSubcategory ToolSubcategory => toolSubcategory;
     public bool Stackable => stackable;
     public bool Placeable => placeable;
     public Sprite Image => image;
@@ -82,7 +91,7 @@ public class UI_Item : ScriptableObject
             stackable = false;
             placeable = true;
         }
-        else if (itemCategory == ItemCategory.Equipment || itemCategory == ItemCategory.Consumable)
+        else if (itemCategory == ItemCategory.Equipment || itemCategory == ItemCategory.Consumable || itemCategory == ItemCategory.Tool)
         {
             placeable = false;
         }
@@ -118,6 +127,11 @@ public class UI_Item : ScriptableObject
     public bool IsConsumable()
     {
         return itemCategory == ItemCategory.Consumable;
+    }
+    
+    public bool IsTool()
+    {
+        return itemCategory == ItemCategory.Tool;
     }
     
     // Helper methods for working with equipment subcategories
@@ -191,6 +205,17 @@ public class UI_Item : ScriptableObject
     {
         return itemCategory == ItemCategory.Structure && structureSubcategory == StructureSubcategory.Size3x3;
     }
+
+    // Tool subcategory helper methods
+    public bool IsWeapon()
+    {
+        return itemCategory == ItemCategory.Tool && toolSubcategory == ToolSubcategory.Weapon;
+    }
+
+    public bool IsToolType()
+    {
+        return itemCategory == ItemCategory.Tool && toolSubcategory == ToolSubcategory.Tool;
+    }
     
     // Optional: Override ToString for debugging
     public override string ToString()
@@ -203,6 +228,10 @@ public class UI_Item : ScriptableObject
         else if (itemCategory == ItemCategory.Structure)
         {
             subcategoryInfo = $", Subcategory: {structureSubcategory}";
+        }
+        else if (itemCategory == ItemCategory.Tool)
+        {
+            subcategoryInfo = $", Subcategory: {toolSubcategory}";
         }
         
         return $"UI_Item: {itemName} (ID: {id}, Type: {itemType}, Category: {itemCategory}{subcategoryInfo})";
