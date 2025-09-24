@@ -1,4 +1,7 @@
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public enum ItemType
 {
@@ -66,6 +69,9 @@ public class UI_Item : ScriptableObject
     [SerializeField] private bool isTrigger = false;
     [SerializeField] private float pickupRadius = 1f;
     
+    [Header("Structure Properties")]
+    [SerializeField] private GameObject structurePrefab;
+    
     // Public getters for accessing the properties
     public int ID => id;
     public string ItemName => itemName;
@@ -82,6 +88,8 @@ public class UI_Item : ScriptableObject
     public bool HasCollider => hasCollider;
     public bool IsTrigger => isTrigger;
     public float PickupRadius => pickupRadius;
+    public GameObject StructurePrefab => structurePrefab;
+
     
     // Validation method to ensure proper settings based on item category
     private void OnValidate()

@@ -19,6 +19,7 @@ public class UI_ItemEditor : Editor
     private SerializedProperty hasCollider;
     private SerializedProperty isTrigger;
     private SerializedProperty pickupRadius;
+    private SerializedProperty structurePrefab;
 
     private void OnEnable()
     {
@@ -37,6 +38,7 @@ public class UI_ItemEditor : Editor
         hasCollider = serializedObject.FindProperty("hasCollider");
         isTrigger = serializedObject.FindProperty("isTrigger");
         pickupRadius = serializedObject.FindProperty("pickupRadius");
+        structurePrefab = serializedObject.FindProperty("structurePrefab");
     }
 
     public override void OnInspectorGUI()
@@ -85,6 +87,16 @@ public class UI_ItemEditor : Editor
         EditorGUILayout.PropertyField(hasCollider);
         EditorGUILayout.PropertyField(isTrigger);
         EditorGUILayout.PropertyField(pickupRadius);
+
+        // Only show structure properties if item category is Structure
+        if (itemCategory.enumValueIndex == 1) // 1 = Structure
+        {
+            EditorGUILayout.Space();
+            
+            // Structure Properties Header
+            EditorGUILayout.LabelField("Structure Properties", EditorStyles.boldLabel);
+            EditorGUILayout.PropertyField(structurePrefab);
+        }
 
         serializedObject.ApplyModifiedProperties();
     }

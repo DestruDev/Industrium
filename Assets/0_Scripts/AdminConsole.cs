@@ -8,7 +8,6 @@ public class AdminConsole : MonoBehaviour
     public TMP_InputField textInput;
     public Button spawnButton;
     private Inventory inventory;
-
     void Start()
     {
         adminPanel.SetActive(false);
@@ -18,6 +17,13 @@ public class AdminConsole : MonoBehaviour
         if (spawnButton != null)
         {
             spawnButton.onClick.AddListener(OnSpawnButtonClicked);
+        }
+        
+        // Setup input field to only allow numbers
+        if (textInput != null)
+        {
+            textInput.contentType = TMP_InputField.ContentType.IntegerNumber;
+            textInput.onValidateInput += ValidateNumberInput;
         }
     }
 
@@ -49,6 +55,18 @@ public class AdminConsole : MonoBehaviour
             textInput.Select();
             textInput.ActivateInputField();
         }
+    }
+    
+    private char ValidateNumberInput(string text, int charIndex, char addedChar)
+    {
+        // Only allow digits (0-9)
+        if (char.IsDigit(addedChar))
+        {
+            return addedChar;
+        }
+        
+        // Reject all other characters
+        return '\0';
     }
     
     private void OnSpawnButtonClicked()

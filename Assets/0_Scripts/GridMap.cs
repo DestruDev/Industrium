@@ -506,13 +506,19 @@ public class GridMap : MonoBehaviour
     }
     
     /// <summary>
-    /// Check if a position has any collision structures
+    /// Check if a position has any collision structures (tiles or prefabs)
     /// </summary>
     /// <param name="gridPos">Grid coordinates</param>
     /// <returns>True if position has collision structures</returns>
     public bool HasCollisionStructure(Vector2Int gridPos)
     {
-        return HasTileAt(gridPos, TilemapLayer.StructuresCollision);
+        // Check for tile-based structures
+        if (HasTileAt(gridPos, TilemapLayer.StructuresCollision))
+            return true;
+            
+        // Check for prefab-based structures
+        GridTile gridTile = GetGridTile(gridPos);
+        return gridTile != null && gridTile.HasStructure();
     }
     
     /// <summary>
@@ -526,13 +532,15 @@ public class GridMap : MonoBehaviour
     }
     
     /// <summary>
-    /// Check if a position has ground (lowground or midground)
+    /// Check if a position has ground (underground, lowground, or midground)
     /// </summary>
     /// <param name="gridPos">Grid coordinates</param>
     /// <returns>True if position has ground tile</returns>
     public bool HasGroundAt(Vector2Int gridPos)
     {
-        return HasTileAt(gridPos, TilemapLayer.Lowground) || HasTileAt(gridPos, TilemapLayer.Midground);
+        return HasTileAt(gridPos, TilemapLayer.Underground) || 
+               HasTileAt(gridPos, TilemapLayer.Lowground) || 
+               HasTileAt(gridPos, TilemapLayer.Midground);
     }
     
     /// <summary>
@@ -643,14 +651,13 @@ public class GridMap : MonoBehaviour
     
     #region Structure Placement
     /// <summary>
-    /// Place a structure at the specified grid position
+    /// Place a structure at the specified grid position using prefabs
     /// </summary>
     /// <param name="gridPosition">Grid position to place the structure</param>
     /// <param name="structureSize">Size of the structure (width x height)</param>
     /// <param name="structureItem">The structure item data</param>
-    /// <param name="layer">Which tilemap layer to place on</param>
     /// <returns>True if placement was successful</returns>
-    public bool PlaceStructure(Vector2Int gridPosition, Vector2Int structureSize, UI_Item structureItem, TilemapLayer layer = TilemapLayer.StructuresCollision)
+    public bool PlaceStructure(Vector2Int gridPosition, Vector2Int structureSize, UI_Item structureItem)
     {
         // Validate placement
         if (!CanPlaceStructure(gridPosition, structureSize))
@@ -659,37 +666,42 @@ public class GridMap : MonoBehaviour
             return false;
         }
         
-        // Get the appropriate tilemap
-        Tilemap targetTilemap = GetTilemapByLayer(layer);
-        if (targetTilemap == null)
+        // Check if structure item has a prefab
+        if (structureItem.StructurePrefab == null)
         {
-            Debug.LogError($"No tilemap found for layer: {layer}");
+            Debug.LogError($"No prefab assigned to structure item: {structureItem.ItemName}");
             return false;
         }
         
-        // Place tiles for the structure
+        // Calculate world position for the structure (bottom-left corner like preview)
+        Vector3 gridCenter = GridToWorld(gridPosition);
+        float cellSize = GetCellSize();
+        Vector3 worldPosition = gridCenter - new Vector3(cellSize * 0.5f, cellSize * 0.5f, 0);
+        
+        // Instantiate the structure prefab
+        GameObject structureInstance = Instantiate(structureItem.StructurePrefab, worldPosition, Quaternion.identity);
+        
+        // Set the structure name for organization
+        structureInstance.name = $"{structureItem.ItemName}_{gridPosition.x}_{gridPosition.y}";
+        
+        // Mark grid cells as occupied by this structure
         for (int x = 0; x < structureSize.x; x++)
         {
             for (int y = 0; y < structureSize.y; y++)
             {
                 Vector2Int tilePos = gridPosition + new Vector2Int(x, y);
-                Vector3Int tilemapPos = GridToTilemap(tilePos);
                 
-                // Place the tile (you'll need to create a tile asset from the structure item)
-                TileBase structureTile = CreateTileFromStructureItem(structureItem);
-                targetTilemap.SetTile(tilemapPos, structureTile);
-                
-                // Update grid data
+                // Update grid data to mark cells as occupied
                 if (IsValidGridPosition(tilePos))
                 {
-                    gridData[tilePos.x, tilePos.y].SetTile(structureTile, layer);
+                    gridData[tilePos.x, tilePos.y].SetStructure(structureInstance, structureItem);
                 }
             }
         }
         
         if (showDebugInfo)
         {
-            Debug.Log($"Placed structure {structureItem.ItemName} at {gridPosition} with size {structureSize} on layer {layer}");
+            Debug.Log($"Placed structure {structureItem.ItemName} at {gridPosition} with size {structureSize}");
         }
         
         return true;
@@ -713,18 +725,30 @@ public class GridMap : MonoBehaviour
                 // Check bounds
                 if (!IsValidGridPosition(checkPos))
                 {
+                    if (showDebugInfo)
+                        Debug.Log($"CanPlaceStructure: Position {checkPos} is out of bounds");
                     return false;
                 }
                 
                 // Check for collision structures
                 if (HasCollisionStructure(checkPos))
                 {
+                    if (showDebugInfo)
+                        Debug.Log($"CanPlaceStructure: Position {checkPos} has collision structure");
                     return false;
                 }
                 
                 // Check for ground (structures need ground to be placed on)
                 if (!HasGroundAt(checkPos))
                 {
+                    if (showDebugInfo)
+                    {
+                        bool hasLowground = HasTileAt(checkPos, TilemapLayer.Lowground);
+                        bool hasMidground = HasTileAt(checkPos, TilemapLayer.Midground);
+                        bool hasUnderground = HasTileAt(checkPos, TilemapLayer.Underground);
+                        bool hasHighground = HasTileAt(checkPos, TilemapLayer.Highground);
+                        Debug.Log($"CanPlaceStructure: Position {checkPos} has no ground. Lowground: {hasLowground}, Midground: {hasMidground}, Underground: {hasUnderground}, Highground: {hasHighground}");
+                    }
                     return false;
                 }
             }
@@ -775,6 +799,57 @@ public class GridMap : MonoBehaviour
         }
         
         return true;
+    }
+    
+    /// <summary>
+    /// Remove a prefab-based structure from the specified position
+    /// </summary>
+    /// <param name="gridPosition">Grid position to remove from</param>
+    /// <param name="structureSize">Size of the structure to remove</param>
+    /// <returns>True if removal was successful</returns>
+    public bool RemovePrefabStructure(Vector2Int gridPosition, Vector2Int structureSize)
+    {
+        GameObject structureToRemove = null;
+        
+        // Find the structure to remove and clear grid data
+        for (int x = 0; x < structureSize.x; x++)
+        {
+            for (int y = 0; y < structureSize.y; y++)
+            {
+                Vector2Int tilePos = gridPosition + new Vector2Int(x, y);
+                
+                if (IsValidGridPosition(tilePos))
+                {
+                    GridTile gridTile = gridData[tilePos.x, tilePos.y];
+                    if (gridTile.HasStructure())
+                    {
+                        // Store reference to the structure (should be the same for all cells)
+                        if (structureToRemove == null)
+                        {
+                            structureToRemove = gridTile.structureInstance;
+                        }
+                        
+                        // Clear the grid data
+                        gridTile.ClearStructure();
+                    }
+                }
+            }
+        }
+        
+        // Destroy the structure GameObject
+        if (structureToRemove != null)
+        {
+            Destroy(structureToRemove);
+            
+            if (showDebugInfo)
+            {
+                Debug.Log($"Removed prefab structure at {gridPosition} with size {structureSize}");
+            }
+            
+            return true;
+        }
+        
+        return false;
     }
     
     /// <summary>
@@ -851,6 +926,10 @@ public class GridTile
     public TileBase structuresCollisionTile;
     public TileBase structuresWalkThroughTile;
     
+    // Structure data for prefab-based structures
+    public GameObject structureInstance;
+    public UI_Item structureItem;
+    
     public void SetTile(TileBase tile, TilemapLayer layer)
     {
         switch (layer)
@@ -900,5 +979,22 @@ public class GridTile
             default:
                 return false;
         }
+    }
+    
+    public void SetStructure(GameObject structure, UI_Item item)
+    {
+        structureInstance = structure;
+        structureItem = item;
+    }
+    
+    public void ClearStructure()
+    {
+        structureInstance = null;
+        structureItem = null;
+    }
+    
+    public bool HasStructure()
+    {
+        return structureInstance != null;
     }
 }

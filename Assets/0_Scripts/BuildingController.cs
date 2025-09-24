@@ -184,6 +184,14 @@ public class BuildingController : MonoBehaviour
         // Check if position is valid for the structure size
         isPlaceable = IsPositionValidForStructure(gridPos, selectedStructureItem);
         
+        // Debug logging
+        if (Time.frameCount % 60 == 0) // Log every 60 frames to avoid spam
+        {
+            Vector2Int structureSize = GetStructureSize(selectedStructureItem);
+            Debug.Log($"GridPos: {gridPos}, StructureSize: {structureSize}, IsPlaceable: {isPlaceable}");
+            Debug.Log($"CanPlaceStructure: {gridMap.CanPlaceStructure(gridPos, structureSize)}");
+        }
+        
         // Update preview color
         UpdatePreviewColor();
     }
@@ -251,6 +259,13 @@ public class BuildingController : MonoBehaviour
     private void PlaceStructure()
     {
         if (gridMap == null || selectedStructureItem == null) return;
+        
+        // Check if structure item has a prefab assigned
+        if (selectedStructureItem.StructurePrefab == null)
+        {
+            Debug.LogError($"No prefab assigned to structure item: {selectedStructureItem.ItemName}. Please assign a prefab in the UI_Item asset.");
+            return;
+        }
         
         Vector2Int gridPos = gridMap.WorldToGrid(lastMousePosition);
         Vector2Int structureSize = GetStructureSize(selectedStructureItem);
