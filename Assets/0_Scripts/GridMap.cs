@@ -657,7 +657,7 @@ public class GridMap : MonoBehaviour
     /// <param name="structureSize">Size of the structure (width x height)</param>
     /// <param name="structureItem">The structure item data</param>
     /// <returns>True if placement was successful</returns>
-    public bool PlaceStructure(Vector2Int gridPosition, Vector2Int structureSize, UI_Item structureItem)
+    public bool PlaceStructure(Vector2Int gridPosition, Vector2Int structureSize, UI_Item structureItem, Transform parent = null)
     {
         // Validate placement
         if (!CanPlaceStructure(gridPosition, structureSize))
@@ -679,7 +679,7 @@ public class GridMap : MonoBehaviour
         Vector3 worldPosition = gridCenter - new Vector3(cellSize * 0.5f, cellSize * 0.5f, 0);
         
         // Instantiate the structure prefab
-        GameObject structureInstance = Instantiate(structureItem.StructurePrefab, worldPosition, Quaternion.identity);
+        GameObject structureInstance = Instantiate(structureItem.StructurePrefab, worldPosition, Quaternion.identity, parent);
         
         // Set the structure name for organization
         structureInstance.name = $"{structureItem.ItemName}_{gridPosition.x}_{gridPosition.y}";

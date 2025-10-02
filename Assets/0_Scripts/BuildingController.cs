@@ -9,16 +9,45 @@ public class BuildingController : MonoBehaviour
     [HideInInspector] [SerializeField] private UI_Item selectedStructureItem;
     [HideInInspector] [SerializeField] private GameObject structurePreview;
     [HideInInspector] [SerializeField] private SpriteRenderer previewRenderer;
+    [HideInInspector] [SerializeField] private GameObject borderParent;
+    [HideInInspector] [SerializeField] private List<GameObject> borderQuads = new List<GameObject>();
+    
+    // Store original sorting layers for restoration
+    private string originalPreviewSortingLayer;
+    private int originalPreviewSortingOrder;
     
     [Header("Visual Feedback")]
     [SerializeField] private Color placeableColor = Color.green;
     [SerializeField] private Color notPlaceableColor = Color.red;
     [SerializeField] private float previewAlpha = 0.7f;
     
+    [Header("Preview Border")]
+    [SerializeField] private bool showPreviewBorder = true;
+    [SerializeField] private Color borderColor = Color.white;
+    [SerializeField] private float borderAlpha = 0.5f;
+    [SerializeField] private string previewSortingLayer = "Foreground";
+    
+    [Header("Border Prefabs")]
+    [SerializeField] private GameObject topLeftBorderPrefab;
+    [SerializeField] private GameObject topRightBorderPrefab;
+    [SerializeField] private GameObject bottomLeftBorderPrefab;
+    [SerializeField] private GameObject bottomRightBorderPrefab;
+    
+    [Header("Border Offsets")]
+    [SerializeField] private Vector2 topLeftOffset = new Vector2(0.1f, 0.1f);
+    [SerializeField] private Vector2 topRightOffset = new Vector2(-0.1f, 0.1f);
+    [SerializeField] private Vector2 bottomLeftOffset = new Vector2(0.1f, -0.1f);
+    [SerializeField] private Vector2 bottomRightOffset = new Vector2(-0.1f, -0.1f);
+    
     [Header("References")]
     [SerializeField] private GridMap gridMap;
     [SerializeField] private Hotbar hotbar;
     [SerializeField] private Camera mainCamera;
+    [SerializeField] private Transform structureContainer;
+    [SerializeField] private Transform playerTransform;
+    
+    [Header("Player Collision")]
+    [SerializeField] private int playerCollisionRadius = 1; // Extra cells around player to prevent placement
     
     [Header("Grid Highlighting")]
     [HideInInspector] [SerializeField] private GameObject gridHighlightParent;
@@ -39,6 +68,8 @@ public class BuildingController : MonoBehaviour
             hotbar = FindFirstObjectByType<Hotbar>();
         if (mainCamera == null)
             mainCamera = Camera.main;
+        if (playerTransform == null)
+            playerTransform = FindFirstObjectByType<PlayerMovement>()?.transform;
         
         // Create structure preview object
         CreateStructurePreview();
@@ -86,7 +117,18 @@ public class BuildingController : MonoBehaviour
             // Don't scale the sprite - it should display at its natural size
             // The grid highlights will show how many cells it actually occupies
             previewRenderer.transform.localScale = Vector3.one;
+            
+            // Store original sorting layer and order
+            originalPreviewSortingLayer = previewRenderer.sortingLayerName;
+            originalPreviewSortingOrder = previewRenderer.sortingOrder;
+            
+            // Change to Foreground sorting layer during preview
+            previewRenderer.sortingLayerName = previewSortingLayer;
+            previewRenderer.sortingOrder = 100; // High order to ensure it's on top
         }
+        
+        // Create border for the structure
+        CreatePreviewBorder(structureItem);
         
         Debug.Log($"Started building mode with: {structureItem.ItemName}");
     }
@@ -96,8 +138,18 @@ public class BuildingController : MonoBehaviour
         isBuilding = false;
         selectedStructureItem = null;
         
+        // Restore original sorting layer
+        if (previewRenderer != null)
+        {
+            previewRenderer.sortingLayerName = originalPreviewSortingLayer;
+            previewRenderer.sortingOrder = originalPreviewSortingOrder;
+        }
+        
         // Hide structure preview
         structurePreview.SetActive(false);
+        
+        // Clear border quads
+        ClearBorderQuads();
         
         // Clear grid highlights
         ClearGridHighlights();
@@ -201,8 +253,49 @@ public class BuildingController : MonoBehaviour
         // Get structure size based on subcategory
         Vector2Int structureSize = GetStructureSize(structureItem);
         
+        // Check if player is in the placement area
+        if (IsPlayerInPlacementArea(gridPos, structureSize))
+        {
+            return false;
+        }
+        
         // Use GridMap's built-in validation
         return gridMap.CanPlaceStructure(gridPos, structureSize);
+    }
+    
+    private bool IsPlayerInPlacementArea(Vector2Int gridPos, Vector2Int structureSize)
+    {
+        if (playerTransform == null || gridMap == null) return false;
+        
+        // Get player's grid position
+        Vector2Int playerGridPos = gridMap.WorldToGrid(playerTransform.position);
+        
+        // Check if any part of the structure placement area overlaps with player's collision radius
+        for (int x = 0; x < structureSize.x; x++)
+        {
+            for (int y = 0; y < structureSize.y; y++)
+            {
+                Vector2Int checkPos = gridPos + new Vector2Int(x, y);
+                
+                // Check if this structure cell is within player's collision radius
+                if (IsWithinPlayerRadius(checkPos, playerGridPos))
+                {
+                    return true; // Structure placement would overlap with player's collision area
+                }
+            }
+        }
+        
+        return false; // Player is not in the placement area
+    }
+    
+    private bool IsWithinPlayerRadius(Vector2Int checkPos, Vector2Int playerPos)
+    {
+        // Check if the position is within the player's collision radius
+        int deltaX = Mathf.Abs(checkPos.x - playerPos.x);
+        int deltaY = Mathf.Abs(checkPos.y - playerPos.y);
+        
+        // Use Manhattan distance (or you can use Euclidean distance if preferred)
+        return deltaX <= playerCollisionRadius && deltaY <= playerCollisionRadius;
     }
     
     private Vector2Int GetStructureSize(UI_Item structureItem)
@@ -239,6 +332,100 @@ public class BuildingController : MonoBehaviour
         targetColor.a = previewAlpha;
         
         previewRenderer.color = targetColor;
+        
+        // Update border color
+        UpdateBorderColor();
+    }
+    
+    private void CreatePreviewBorder(UI_Item structureItem)
+    {
+        if (!showPreviewBorder || borderParent == null) return;
+        
+        // Clear existing border quads
+        ClearBorderQuads();
+        
+        // Get structure size
+        Vector2Int structureSize = GetStructureSize(structureItem);
+        float cellSize = gridMap.GetCellSize();
+        
+        // Calculate border dimensions
+        float width = structureSize.x * cellSize;
+        float height = structureSize.y * cellSize;
+        
+        // Instantiate corner border prefabs with individual offsets
+        if (topLeftBorderPrefab != null)
+        {
+            GameObject topLeft = Instantiate(topLeftBorderPrefab, borderParent.transform);
+            topLeft.transform.localPosition = new Vector3(topLeftOffset.x, height + topLeftOffset.y, 0);
+            SetBorderSortingLayer(topLeft);
+            borderQuads.Add(topLeft);
+        }
+        
+        if (topRightBorderPrefab != null)
+        {
+            GameObject topRight = Instantiate(topRightBorderPrefab, borderParent.transform);
+            topRight.transform.localPosition = new Vector3(width + topRightOffset.x, height + topRightOffset.y, 0);
+            SetBorderSortingLayer(topRight);
+            borderQuads.Add(topRight);
+        }
+        
+        if (bottomLeftBorderPrefab != null)
+        {
+            GameObject bottomLeft = Instantiate(bottomLeftBorderPrefab, borderParent.transform);
+            bottomLeft.transform.localPosition = new Vector3(bottomLeftOffset.x, bottomLeftOffset.y, 0);
+            SetBorderSortingLayer(bottomLeft);
+            borderQuads.Add(bottomLeft);
+        }
+        
+        if (bottomRightBorderPrefab != null)
+        {
+            GameObject bottomRight = Instantiate(bottomRightBorderPrefab, borderParent.transform);
+            bottomRight.transform.localPosition = new Vector3(width + bottomRightOffset.x, bottomRightOffset.y, 0);
+            SetBorderSortingLayer(bottomRight);
+            borderQuads.Add(bottomRight);
+        }
+    }
+    
+    private void SetBorderSortingLayer(GameObject borderObject)
+    {
+        // Set all SpriteRenderers in the border object to use the preview sorting layer
+        SpriteRenderer[] renderers = borderObject.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer renderer in renderers)
+        {
+            renderer.sortingLayerName = previewSortingLayer;
+            renderer.sortingOrder = 99; // Just below the main preview
+        }
+    }
+    
+    private void ClearBorderQuads()
+    {
+        foreach (GameObject quad in borderQuads)
+        {
+            if (quad != null)
+                DestroyImmediate(quad);
+        }
+        borderQuads.Clear();
+    }
+    
+    private void UpdateBorderColor()
+    {
+        if (!showPreviewBorder) return;
+        
+        Color targetBorderColor = isPlaceable ? borderColor : notPlaceableColor;
+        targetBorderColor.a = borderAlpha;
+        
+        foreach (GameObject borderObject in borderQuads)
+        {
+            if (borderObject != null)
+            {
+                // Update all SpriteRenderers in the border object (including children)
+                SpriteRenderer[] renderers = borderObject.GetComponentsInChildren<SpriteRenderer>();
+                foreach (SpriteRenderer renderer in renderers)
+                {
+                    renderer.color = targetBorderColor;
+                }
+            }
+        }
     }
     
     private void HandleBuildingInput()
@@ -271,7 +458,7 @@ public class BuildingController : MonoBehaviour
         Vector2Int structureSize = GetStructureSize(selectedStructureItem);
         
         // Place the structure using GridMap
-        bool success = gridMap.PlaceStructure(gridPos, structureSize, selectedStructureItem);
+        bool success = gridMap.PlaceStructure(gridPos, structureSize, selectedStructureItem, structureContainer);
         
         if (success)
         {
@@ -295,6 +482,11 @@ public class BuildingController : MonoBehaviour
         // Add SpriteRenderer
         previewRenderer = structurePreview.AddComponent<SpriteRenderer>();
         previewRenderer.sortingOrder = 100; // Render on top
+        
+        // Create border parent
+        borderParent = new GameObject("PreviewBorder");
+        borderParent.transform.SetParent(structurePreview.transform);
+        borderParent.transform.localPosition = Vector3.zero;
         
         // Initially hide the preview
         structurePreview.SetActive(false);

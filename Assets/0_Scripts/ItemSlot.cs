@@ -332,7 +332,15 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
             }
             else
             {
-                itemBackground.color = originalBackgroundColor;
+                // If ItemBackground has an image, use white color to show the image properly
+                if (itemBackground.sprite != null)
+                {
+                    itemBackground.color = Color.white;
+                }
+                else
+                {
+                    itemBackground.color = originalBackgroundColor;
+                }
             }
         }
         

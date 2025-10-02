@@ -11,6 +11,14 @@ public class Equipment : MonoBehaviour
     [SerializeField] private ItemSlot gloveSlot;      // Gloves/hand equipment
     [SerializeField] private ItemSlot jewelrySlot;    // Jewelry (rings, necklaces, etc.)
     
+    [Header("Equipment Silhouette Sprites")]
+    [SerializeField] private Sprite topSilhouette;        // Top equipment silhouette
+    [SerializeField] private Sprite bottomSilhouette;     // Bottom equipment silhouette
+    [SerializeField] private Sprite shoesSilhouette;      // Shoes silhouette
+    [SerializeField] private Sprite helmetSilhouette;     // Helmet silhouette
+    [SerializeField] private Sprite gloveSilhouette;      // Gloves silhouette
+    [SerializeField] private Sprite jewelrySilhouette;    // Jewelry silhouette
+    
     [Header("Equipment Highlight Settings")]
     [SerializeField] private Color highlightColor = new Color(0.949f, 0.949f, 0.949f, 1f); // F2F2F2
     [SerializeField] private Color normalColor = Color.white;
@@ -21,6 +29,9 @@ public class Equipment : MonoBehaviour
     // Array to easily access all equipment slots
     private ItemSlot[] equipmentSlots;
     private EquipmentSubcategory[] slotTypes;
+    
+    // Array to easily access all silhouette sprites
+    private Sprite[] silhouetteSprites;
     
     void Start()
     {
@@ -40,6 +51,9 @@ public class Equipment : MonoBehaviour
             EquipmentSubcategory.Jewelry 
         };
         
+        // Create silhouette sprites array
+        silhouetteSprites = new Sprite[6] { topSilhouette, bottomSilhouette, shoesSilhouette, helmetSilhouette, gloveSilhouette, jewelrySilhouette };
+        
         // Validate that all slots are assigned
         for (int i = 0; i < equipmentSlots.Length; i++)
         {
@@ -55,6 +69,25 @@ public class Equipment : MonoBehaviour
                 if (showDebugInfo)
                 {
                     Debug.Log($"Initialized equipment slot: {slotTypes[i]} - {equipmentSlots[i].name}");
+                }
+            }
+        }
+        
+        // Validate silhouette sprites and apply them to equipment slots
+        for (int i = 0; i < silhouetteSprites.Length; i++)
+        {
+            if (silhouetteSprites[i] == null)
+            {
+                Debug.LogWarning($"Silhouette sprite {i} ({slotTypes[i]}) is not assigned!");
+            }
+            else
+            {
+                // Apply silhouette sprite to the equipment slot's ItemBackground
+                ApplySilhouetteToSlot(equipmentSlots[i], silhouetteSprites[i]);
+                
+                if (showDebugInfo)
+                {
+                    Debug.Log($"Initialized silhouette sprite: {slotTypes[i]} - {silhouetteSprites[i].name}");
                 }
             }
         }
@@ -74,6 +107,36 @@ public class Equipment : MonoBehaviour
         
         // Set up the slot to only accept equipment items of the correct subcategory
         // This will be handled in the CanAcceptItem method
+    }
+    
+    private void ApplySilhouetteToSlot(ItemSlot slot, Sprite silhouetteSprite)
+    {
+        if (slot == null || silhouetteSprite == null) return;
+        
+        // Find the SilhouetteSlot child
+        Transform silhouetteSlotTransform = slot.transform.Find("SilhouetteSlot");
+        if (silhouetteSlotTransform != null)
+        {
+            Image silhouetteImage = silhouetteSlotTransform.GetComponent<Image>();
+            if (silhouetteImage != null)
+            {
+                silhouetteImage.sprite = silhouetteSprite;
+                silhouetteImage.color = Color.white; // Ensure it's visible
+                
+                if (showDebugInfo)
+                {
+                    Debug.Log($"Applied silhouette {silhouetteSprite.name} to {slot.name}");
+                }
+            }
+            else
+            {
+                Debug.LogWarning($"SilhouetteSlot on {slot.name} doesn't have an Image component!");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"SilhouetteSlot not found in {slot.name}. Make sure there's a child named 'SilhouetteSlot'.");
+        }
     }
     
     /// <summary>
@@ -251,4 +314,69 @@ public class Equipment : MonoBehaviour
     public ItemSlot GetHelmetSlot() => helmetSlot;
     public ItemSlot GetGloveSlot() => gloveSlot;
     public ItemSlot GetJewelrySlot() => jewelrySlot;
+    
+    #region Silhouette Management
+    
+    /// <summary>
+    /// Get the silhouette sprite for a specific equipment slot
+    /// </summary>
+    /// <param name="subcategory">The equipment subcategory</param>
+    /// <returns>The silhouette sprite, or null if not found</returns>
+    public Sprite GetSilhouetteSprite(EquipmentSubcategory subcategory)
+    {
+        int slotIndex = GetSlotIndex(subcategory);
+        if (slotIndex >= 0 && slotIndex < silhouetteSprites.Length)
+        {
+            return silhouetteSprites[slotIndex];
+        }
+        return null;
+    }
+    
+    /// <summary>
+    /// Set the silhouette sprite for a specific equipment slot
+    /// </summary>
+    /// <param name="subcategory">The equipment subcategory</param>
+    /// <param name="silhouetteSprite">The silhouette sprite to set</param>
+    public void SetSilhouetteSprite(EquipmentSubcategory subcategory, Sprite silhouetteSprite)
+    {
+        int slotIndex = GetSlotIndex(subcategory);
+        if (slotIndex >= 0 && slotIndex < silhouetteSprites.Length)
+        {
+            silhouetteSprites[slotIndex] = silhouetteSprite;
+        }
+    }
+    
+    /// <summary>
+    /// Check if a silhouette sprite is assigned for a specific equipment slot
+    /// </summary>
+    /// <param name="subcategory">The equipment subcategory</param>
+    /// <returns>True if a silhouette sprite is assigned</returns>
+    public bool HasSilhouetteSprite(EquipmentSubcategory subcategory)
+    {
+        int slotIndex = GetSlotIndex(subcategory);
+        if (slotIndex >= 0 && slotIndex < silhouetteSprites.Length)
+        {
+            return silhouetteSprites[slotIndex] != null;
+        }
+        return false;
+    }
+    
+    /// <summary>
+    /// Get the slot index for a specific equipment subcategory
+    /// </summary>
+    /// <param name="subcategory">The equipment subcategory</param>
+    /// <returns>The slot index, or -1 if not found</returns>
+    private int GetSlotIndex(EquipmentSubcategory subcategory)
+    {
+        for (int i = 0; i < slotTypes.Length; i++)
+        {
+            if (slotTypes[i] == subcategory)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    #endregion
 }
