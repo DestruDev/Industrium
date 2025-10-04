@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public enum SlotType
 {
@@ -33,8 +34,10 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
     // Click pickup system
     private static ItemSlot pickedUpSlot = null;
     private static UI_Item pickedUpItemData = null;
+    private static int pickedUpQuantity = 1;
     private static GameObject cursorItem;
     private static Image cursorItemImage;
+    private static TextMeshProUGUI cursorQuantityText;
     
     void Awake()
     {
@@ -70,10 +73,19 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
         {
             PlaceItem();
         }
-        // If we don't have an item picked up, try to pick up this slot's item
+        // If we don't have an item picked up, handle left/right click on this slot's item
         else if (itemController != null && itemController.GetItemData() != null)
         {
-            PickUpItem();
+            // Check for right-click to split item
+            if (eventData.button == PointerEventData.InputButton.Right)
+            {
+                SplitItem();
+            }
+            // Left-click to pick up entire stack
+            else if (eventData.button == PointerEventData.InputButton.Left)
+            {
+                PickUpItem();
+            }
         }
     }
     
@@ -82,8 +94,9 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
         if (itemController == null || itemController.GetItemData() == null)
             return;
             
-        // Store item data before clearing
+        // Store item data and quantity before clearing
         pickedUpItemData = itemController.GetItemData();
+        pickedUpQuantity = itemController.GetQuantity();
         string itemName = pickedUpItemData.ItemName;
         
         // Set this as the picked up slot
@@ -95,7 +108,41 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
         // Clear the original slot completely (no semi-transparent silhouette)
         itemController.SetItemData(null);
         
-        Debug.Log($"Picked up: {itemName}");
+        Debug.Log($"Picked up: {itemName} (Quantity: {pickedUpQuantity})");
+    }
+    
+    private void SplitItem()
+    {
+        if (itemController == null || itemController.GetItemData() == null)
+            return;
+            
+        int currentQuantity = itemController.GetQuantity();
+        
+        // Only split if quantity is >= 2
+        if (currentQuantity < 2)
+        {
+            Debug.Log($"Cannot split item: quantity is {currentQuantity} (need at least 2)");
+            return;
+        }
+        
+        // Calculate split quantities (round up)
+        int splitQuantity = (currentQuantity + 1) / 2; // This gives us the "round up" behavior
+        int remainingQuantity = currentQuantity - splitQuantity;
+        
+        // Store the split item data and quantity
+        pickedUpItemData = itemController.GetItemData();
+        pickedUpQuantity = splitQuantity;
+        
+        // Set this as the picked up slot
+        pickedUpSlot = this;
+        
+        // Create cursor item for the split stack
+        CreateCursorItem();
+        
+        // Update the original slot with remaining quantity
+        itemController.SetQuantity(remainingQuantity);
+        
+        Debug.Log($"Split item: {pickedUpItemData.ItemName} - Split: {splitQuantity}, Remaining: {remainingQuantity}");
     }
     
     private void PlaceItem()
@@ -113,17 +160,49 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
         // Get the current item in this slot
         UI_Item currentItem = itemController?.GetItemData();
         
-        // If this slot has an item, swap what we're holding
+        // If this slot has an item, check if we can stack
         if (currentItem != null)
         {
-            // Store what we were holding
+            // Check if we can add to existing stack (same item, stackable, not at max)
+            if (currentItem.ID == pickedUpItemData.ID && currentItem.Stackable)
+            {
+                const int MAX_STACK_SIZE = 99;
+                int existingQuantity = itemController.GetQuantity();
+                int newQuantity = existingQuantity + pickedUpQuantity;
+                
+                if (newQuantity <= MAX_STACK_SIZE)
+                {
+                    // Add to existing stack
+                    itemController.SetQuantity(newQuantity);
+                    
+                    // Clear pickup
+                    pickedUpSlot = null;
+                    pickedUpItemData = null;
+                    pickedUpQuantity = 1;
+                    DestroyCursorItem();
+                    
+                    // Force tooltip refresh for this slot
+                    ForceTooltipRefresh();
+                    
+                    Debug.Log($"Added to existing stack: {currentItem.ItemName} now has {newQuantity} items");
+                    return;
+                }
+            }
+            
+            // If we can't stack, swap what we're holding
+            // Store what we were holding (item and quantity)
             UI_Item itemWeWereHolding = pickedUpItemData;
+            int quantityWeWereHolding = pickedUpQuantity;
+            
+            // Get the current slot's item and quantity
+            int currentQuantity = itemController.GetQuantity();
             
             // Put the current slot's item in our hand (swap what we're holding)
             pickedUpItemData = currentItem;
+            pickedUpQuantity = currentQuantity;
             
             // Put what we were holding into this slot
-            itemController.SetItemData(itemWeWereHolding);
+            itemController.SetItemData(itemWeWereHolding, quantityWeWereHolding);
             
             // Update cursor item to show the new item we're holding
             DestroyCursorItem();
@@ -132,22 +211,23 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
             // Force tooltip refresh for this slot
             ForceTooltipRefresh();
             
-            Debug.Log($"Swapped to holding: {pickedUpItemData.ItemName}");
+            Debug.Log($"Swapped to holding: {pickedUpItemData.ItemName} (Quantity: {pickedUpQuantity})");
         }
         else
         {
             // Move item to this empty slot and clear pickup
-            itemController.SetItemData(pickedUpItemData);
+            itemController.SetItemData(pickedUpItemData, pickedUpQuantity);
             
             // Clear pickup
             pickedUpSlot = null;
             pickedUpItemData = null;
+            pickedUpQuantity = 1;
             DestroyCursorItem();
             
             // Force tooltip refresh for this slot
             ForceTooltipRefresh();
             
-            Debug.Log($"Placed item in empty slot");
+            Debug.Log($"Placed item in empty slot (Quantity: {pickedUpQuantity})");
         }
     }
     #endregion
@@ -218,6 +298,72 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
         // Set position with offset
         Vector2 mousePos = Input.mousePosition;
         cursorRect.position = new Vector2(mousePos.x + offsetX, mousePos.y + offsetY);
+        
+        // Add quantity text if quantity >= 2 and item is stackable
+        if (pickedUpQuantity >= 2 && pickedUpItemData.Stackable)
+        {
+            CreateCursorQuantityText();
+        }
+    }
+    
+    private void CreateCursorQuantityText()
+    {
+        if (cursorItem == null) return;
+        
+        // Create quantity text GameObject
+        GameObject quantityTextObj = new GameObject("QuantityText");
+        quantityTextObj.transform.SetParent(cursorItem.transform);
+        
+        // Add TextMeshProUGUI component
+        cursorQuantityText = quantityTextObj.AddComponent<TextMeshProUGUI>();
+        cursorQuantityText.text = pickedUpQuantity.ToString();
+        cursorQuantityText.raycastTarget = false; // Don't block raycasts
+        
+        // Get inventory settings for quantity text styling
+        Inventory inventory = FindFirstObjectByType<Inventory>();
+        if (inventory != null)
+        {
+            // Use hotbar settings for cursor quantity text (since it's more prominent)
+            cursorQuantityText.fontSize = inventory.GetHotbarFontSize();
+            cursorQuantityText.color = inventory.GetHotbarTextColor();
+            cursorQuantityText.fontStyle = inventory.GetQuantityFontStyle();
+            
+            // Apply font asset if available
+            TMP_FontAsset quantityFontAsset = inventory.GetQuantityFontAsset();
+            if (quantityFontAsset != null)
+            {
+                cursorQuantityText.font = quantityFontAsset;
+            }
+            
+            // Apply material preset if available
+            Material quantityMaterial = inventory.GetQuantityTextMaterial();
+            if (quantityMaterial != null)
+            {
+                cursorQuantityText.fontMaterial = quantityMaterial;
+            }
+        }
+        else
+        {
+            // Default styling
+            cursorQuantityText.fontSize = 12f;
+            cursorQuantityText.color = Color.white;
+            cursorQuantityText.fontStyle = FontStyles.Bold;
+        }
+        
+        // Position the quantity text using inventory offset settings
+        RectTransform quantityRect = cursorQuantityText.GetComponent<RectTransform>();
+        quantityRect.anchorMin = new Vector2(1, 0); // Bottom right
+        quantityRect.anchorMax = new Vector2(1, 0);
+        quantityRect.pivot = new Vector2(1, 0);
+        
+        // Get offset values from Inventory
+        float offsetX = inventory != null ? inventory.GetCursorQuantityOffsetX() : -2f;
+        float offsetY = inventory != null ? inventory.GetCursorQuantityOffsetY() : 2f;
+        quantityRect.anchoredPosition = new Vector2(offsetX, offsetY);
+        quantityRect.sizeDelta = new Vector2(20, 16); // Small size for quantity text
+        
+        // Make sure it's visible
+        cursorQuantityText.enabled = true;
     }
     
     private void DestroyCursorItem()
@@ -227,6 +373,7 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
             Destroy(cursorItem);
             cursorItem = null;
             cursorItemImage = null;
+            cursorQuantityText = null;
         }
     }
     
@@ -416,21 +563,23 @@ public class ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler
     {
         if (draggedController == null) return;
         
-        // Get the dragged item data
+        // Get the dragged item data and quantity
         UI_Item draggedItem = draggedController.GetItemData();
+        int draggedQuantity = draggedController.GetQuantity();
         UI_Item currentItem = itemController?.GetItemData();
+        int currentQuantity = itemController?.GetQuantity() ?? 0;
         
         // If this slot has an item, swap them
         if (currentItem != null)
         {
-            // Swap items
-            draggedController.SetItemData(currentItem);
-            itemController.SetItemData(draggedItem);
+            // Swap items and quantities
+            draggedController.SetItemData(currentItem, currentQuantity);
+            itemController.SetItemData(draggedItem, draggedQuantity);
         }
         else
         {
             // Move item to this empty slot
-            itemController.SetItemData(draggedItem);
+            itemController.SetItemData(draggedItem, draggedQuantity);
             draggedController.SetItemData(null);
         }
         

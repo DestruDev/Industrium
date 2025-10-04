@@ -14,7 +14,8 @@ public enum ItemCategory
     Equipment,
     Structure,
     Consumable,
-    Tool
+    Tool,
+    Material
 }
 
     public enum EquipmentSubcategory
@@ -45,6 +46,18 @@ public enum ItemCategory
         Tool
     }
 
+    public enum MaterialSubcategory
+    {
+        Metal,
+        Wood,
+        Stone,
+        Fabric,
+        Gem,
+        Chemical,
+        Organic,
+        Other
+    }
+
 [CreateAssetMenu(fileName = "New Item", menuName = "Scriptable Objects/UI_Item")]
 public class UI_Item : ScriptableObject
 {
@@ -56,6 +69,7 @@ public class UI_Item : ScriptableObject
     [SerializeField] private EquipmentSubcategory equipmentSubcategory = EquipmentSubcategory.Top;
     [SerializeField] private StructureSubcategory structureSubcategory = StructureSubcategory.Size1x1;
     [SerializeField] private ToolSubcategory toolSubcategory = ToolSubcategory.Weapon;
+    [SerializeField] private MaterialSubcategory materialSubcategory = MaterialSubcategory.Other;
     [SerializeField] private bool stackable;
     [SerializeField] private bool placeable;
 
@@ -80,6 +94,7 @@ public class UI_Item : ScriptableObject
     public EquipmentSubcategory EquipmentSubcategory => equipmentSubcategory;
     public StructureSubcategory StructureSubcategory => structureSubcategory;
     public ToolSubcategory ToolSubcategory => toolSubcategory;
+    public MaterialSubcategory MaterialSubcategory => materialSubcategory;
     public bool Stackable => stackable;
     public bool Placeable => placeable;
     public Sprite Image => image;
@@ -225,6 +240,47 @@ public class UI_Item : ScriptableObject
         return itemCategory == ItemCategory.Tool && toolSubcategory == ToolSubcategory.Tool;
     }
     
+    // Material subcategory helper methods
+    public bool IsMetal()
+    {
+        return itemCategory == ItemCategory.Material && materialSubcategory == MaterialSubcategory.Metal;
+    }
+    
+    public bool IsWood()
+    {
+        return itemCategory == ItemCategory.Material && materialSubcategory == MaterialSubcategory.Wood;
+    }
+    
+    public bool IsStone()
+    {
+        return itemCategory == ItemCategory.Material && materialSubcategory == MaterialSubcategory.Stone;
+    }
+    
+    public bool IsFabric()
+    {
+        return itemCategory == ItemCategory.Material && materialSubcategory == MaterialSubcategory.Fabric;
+    }
+    
+    public bool IsGem()
+    {
+        return itemCategory == ItemCategory.Material && materialSubcategory == MaterialSubcategory.Gem;
+    }
+    
+    public bool IsChemical()
+    {
+        return itemCategory == ItemCategory.Material && materialSubcategory == MaterialSubcategory.Chemical;
+    }
+    
+    public bool IsOrganic()
+    {
+        return itemCategory == ItemCategory.Material && materialSubcategory == MaterialSubcategory.Organic;
+    }
+    
+    public bool IsOtherMaterial()
+    {
+        return itemCategory == ItemCategory.Material && materialSubcategory == MaterialSubcategory.Other;
+    }
+    
     // Optional: Override ToString for debugging
     public override string ToString()
     {
@@ -240,6 +296,10 @@ public class UI_Item : ScriptableObject
         else if (itemCategory == ItemCategory.Tool)
         {
             subcategoryInfo = $", Subcategory: {toolSubcategory}";
+        }
+        else if (itemCategory == ItemCategory.Material)
+        {
+            subcategoryInfo = $", Subcategory: {materialSubcategory}";
         }
         
         return $"UI_Item: {itemName} (ID: {id}, Type: {itemType}, Category: {itemCategory}{subcategoryInfo})";

@@ -1,11 +1,18 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Linq;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 public class ItemManager : MonoBehaviour
 {
     [Header("Item Database")]
     [SerializeField] private UI_Item[] itemDatabase;
+    
+    [Header("Auto-Discovery Settings")]
+    [SerializeField] private bool useAutoDiscovery = true;
+    [SerializeField] private string[] searchPaths = { "Assets/1_Prefabs/Items(ScriptableObjects)" };
     
     private Dictionary<int, UI_Item> itemLookup;
     
@@ -31,16 +38,64 @@ public class ItemManager : MonoBehaviour
         // Create lookup dictionary for fast ID-based access
         itemLookup = new Dictionary<int, UI_Item>();
         
+        // Use auto-discovery if enabled
+        if (useAutoDiscovery)
+        {
+            LoadItemsFromAssets();
+        }
+        else
+        {
+            LoadItemsFromArray();
+        }
+        
+        Debug.Log($"ItemManager initialized with {itemLookup.Count} items");
+    }
+    
+    private void LoadItemsFromAssets()
+    {
+#if UNITY_EDITOR
+        // Find all UI_Item assets in the specified paths
+        string[] guids = AssetDatabase.FindAssets("t:UI_Item", searchPaths);
+        
+        foreach (string guid in guids)
+        {
+            string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+            UI_Item item = AssetDatabase.LoadAssetAtPath<UI_Item>(assetPath);
+            
+            if (item != null)
+            {
+                if (itemLookup.ContainsKey(item.ID))
+                {
+                    Debug.LogWarning($"Duplicate item ID {item.ID} found: {item.ItemName} at {assetPath}. Skipping duplicate.");
+                    continue;
+                }
+                
+                itemLookup[item.ID] = item;
+                Debug.Log($"Auto-loaded item: {item.ItemName} (ID: {item.ID}) from {assetPath}");
+            }
+        }
+#else
+        // Fallback to manual array in builds
+        LoadItemsFromArray();
+#endif
+    }
+    
+    private void LoadItemsFromArray()
+    {
         foreach (UI_Item item in itemDatabase)
         {
             if (item != null)
             {
+                if (itemLookup.ContainsKey(item.ID))
+                {
+                    Debug.LogWarning($"Duplicate item ID {item.ID} found: {item.ItemName}. Skipping duplicate.");
+                    continue;
+                }
+                
                 itemLookup[item.ID] = item;
                 Debug.Log($"Loaded item: {item.ItemName} (ID: {item.ID})");
             }
         }
-        
-        Debug.Log($"ItemManager initialized with {itemLookup.Count} items");
     }
     
     /// <summary>
@@ -66,6 +121,15 @@ public class ItemManager : MonoBehaviour
     public int[] GetAllItemIDs()
     {
         return itemLookup.Keys.ToArray();
+    }
+    
+    /// <summary>
+    /// Refresh the item database (useful for testing or when new items are added)
+    /// </summary>
+    public void RefreshDatabase()
+    {
+        itemLookup.Clear();
+        InitializeItemDatabase();
     }
     
     /// <summary>
