@@ -7,6 +7,7 @@ public class Inventory : MonoBehaviour
     [Header("Inventory UI")]
     [SerializeField] private GameObject inventoryUI;
     private AdminConsole adminConsole;
+    private InGameMenu inGameMenu;
     
     [Header("Cursor Item Settings")]
     [SerializeField] private float cursorItemSizeX = 32f;
@@ -49,6 +50,7 @@ public class Inventory : MonoBehaviour
             inventoryUI.SetActive(false);
         }
         adminConsole = FindFirstObjectByType<AdminConsole>();
+        inGameMenu = FindFirstObjectByType<InGameMenu>();
         
         // Initialize slot references
         InitializeSlotReferences();
@@ -111,8 +113,9 @@ public class Inventory : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.E))
         {
-            // Only allow inventory toggle if admin console is not open
-            if (adminConsole == null || !IsAdminConsoleOpen())
+            // Only allow inventory toggle if admin console and menu panel are not open
+            if ((adminConsole == null || !IsAdminConsoleOpen()) && 
+                (inGameMenu == null || !IsMenuOpen()))
             {
                 ToggleInventory();
             }
@@ -145,6 +148,12 @@ public class Inventory : MonoBehaviour
     private bool IsAdminConsoleOpen()
     {
         return adminConsole != null && adminConsole.adminPanel != null && adminConsole.adminPanel.activeSelf;
+    }
+    
+    // Private method to check if menu panel is open
+    private bool IsMenuOpen()
+    {
+        return inGameMenu != null && inGameMenu.IsMenuOpen();
     }
     
     // Public getters for cursor item settings

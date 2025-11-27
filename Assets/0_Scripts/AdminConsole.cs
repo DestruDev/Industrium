@@ -7,6 +7,7 @@ public class AdminConsole : MonoBehaviour
     public GameObject adminPanel;
     public TMP_InputField textInput;
     public Button spawnButton;
+    public TMP_Dropdown itemTypeDropdown;
     private Inventory inventory;
     void Start()
     {
@@ -24,6 +25,14 @@ public class AdminConsole : MonoBehaviour
         {
             textInput.contentType = TMP_InputField.ContentType.IntegerNumber;
             textInput.onValidateInput += ValidateNumberInput;
+        }
+        
+        // Setup dropdown with item type options
+        if (itemTypeDropdown != null)
+        {
+            itemTypeDropdown.ClearOptions();
+            itemTypeDropdown.AddOptions(new System.Collections.Generic.List<string> { "UI", "Ground" });
+            itemTypeDropdown.value = 0; // Default to UI
         }
     }
 
@@ -95,16 +104,29 @@ public class AdminConsole : MonoBehaviour
                 Debug.Log($"Available item IDs: [{string.Join(", ", availableIDs)}]");
             }
             
-            bool success = inventory.SpawnItemByID(itemID);
+            // Check dropdown selection for item type
+            bool spawnAsUI = itemTypeDropdown == null || itemTypeDropdown.value == 0; // 0 = UI, 1 = Ground
+            
+            bool success = false;
+            if (spawnAsUI)
+            {
+                success = inventory.SpawnItemByID(itemID);
+            }
+            else
+            {
+                success = ItemManager.Instance.SpawnGroundItem(itemID);
+            }
             
             if (success)
             {
-                Debug.Log($"AdminConsole: Successfully spawned item with ID {itemID}");
+                string itemTypeText = spawnAsUI ? "UI" : "Ground";
+                Debug.Log($"AdminConsole: Successfully spawned {itemTypeText} item with ID {itemID}");
                 textInput.text = ""; // Clear the input field
             }
             else
             {
-                Debug.LogWarning($"AdminConsole: Failed to spawn item with ID {itemID}");
+                string itemTypeText = spawnAsUI ? "UI" : "Ground";
+                Debug.LogWarning($"AdminConsole: Failed to spawn {itemTypeText} item with ID {itemID}");
             }
         }
         else

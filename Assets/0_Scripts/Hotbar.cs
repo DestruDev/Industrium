@@ -31,8 +31,8 @@ public class Hotbar : MonoBehaviour
     
     private void HandleInput()
     {
-        // Don't handle hotbar input if admin console is open
-        if (IsAdminConsoleOpen())
+        // Don't handle hotbar input if admin console or menu panel is open
+        if (IsAdminConsoleOpen() || IsMenuOpen())
         {
             return;
         }
@@ -144,6 +144,20 @@ public class Hotbar : MonoBehaviour
         if (adminConsole != null && adminConsole.adminPanel != null)
         {
             return adminConsole.adminPanel.activeSelf;
+        }
+        return false;
+    }
+    
+    /// <summary>
+    /// Check if the menu panel is currently open
+    /// </summary>
+    /// <returns>True if menu panel is open, false otherwise</returns>
+    private bool IsMenuOpen()
+    {
+        InGameMenu inGameMenu = FindFirstObjectByType<InGameMenu>();
+        if (inGameMenu != null)
+        {
+            return inGameMenu.IsMenuOpen();
         }
         return false;
     }

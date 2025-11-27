@@ -14,6 +14,9 @@ public class ItemManager : MonoBehaviour
     [SerializeField] private bool useAutoDiscovery = true;
     [SerializeField] private string[] searchPaths = { "Assets/1_Prefabs/Items(ScriptableObjects)" };
     
+    [Header("Ground Item Settings")]
+    [SerializeField] private Transform groundItemContainer;
+    
     private Dictionary<int, UI_Item> itemLookup;
     
     public static ItemManager Instance { get; private set; }
@@ -149,5 +152,71 @@ public class ItemManager : MonoBehaviour
     public int GetItemCount()
     {
         return itemLookup.Count;
+    }
+    
+    /// <summary>
+    /// Spawn a ground item in the world
+    /// </summary>
+    /// <param name="itemID">The ID of the item to spawn</param>
+    /// <param name="spawnPosition">Position to spawn the item (optional, defaults to player position)</param>
+    /// <returns>True if successful, false otherwise</returns>
+    public bool SpawnGroundItem(int itemID, Vector3? spawnPosition = null)
+    {
+        UI_Item itemToSpawn = GetItemByID(itemID);
+        if (itemToSpawn == null)
+        {
+            Debug.LogWarning($"Item with ID {itemID} not found in database.");
+            return false;
+        }
+        
+        // Find the player if no position specified
+        Vector3 finalSpawnPosition;
+        if (spawnPosition.HasValue)
+        {
+            finalSpawnPosition = spawnPosition.Value;
+        }
+        else
+        {
+            GameObject player = GameObject.FindGameObjectWithTag("Player");
+            if (player == null)
+            {
+                Debug.LogError("Player not found! Make sure the player has a 'Player' tag.");
+                return false;
+            }
+            finalSpawnPosition = player.transform.position + Vector3.right * 2f;
+        }
+        
+        // Create a new GameObject for the ground item
+        GameObject groundItem = new GameObject($"Ground_{itemToSpawn.ItemName}_{itemID}");
+        
+        // Add SpriteRenderer component
+        SpriteRenderer spriteRenderer = groundItem.AddComponent<SpriteRenderer>();
+        // Always use the UI image for ground items
+        spriteRenderer.sprite = itemToSpawn.Image;
+        spriteRenderer.sortingOrder = 1; // Make sure it's visible above ground
+        
+        // Set position and scale
+        groundItem.transform.position = finalSpawnPosition;
+        groundItem.transform.localScale = itemToSpawn.GroundScale;
+        
+        // Parent to the ground item container if specified
+        if (groundItemContainer != null)
+        {
+            groundItem.transform.SetParent(groundItemContainer);
+        }
+        
+        // Add collider if specified
+        if (itemToSpawn.HasCollider)
+        {
+            BoxCollider2D collider = groundItem.AddComponent<BoxCollider2D>();
+            collider.isTrigger = itemToSpawn.IsTrigger;
+        }
+        
+        // Add pickup script
+        GroundItemPickup pickup = groundItem.AddComponent<GroundItemPickup>();
+        pickup.SetItemData(itemToSpawn);
+        
+        Debug.Log($"Successfully spawned ground item: {itemToSpawn.ItemName} at position {finalSpawnPosition}");
+        return true;
     }
 }

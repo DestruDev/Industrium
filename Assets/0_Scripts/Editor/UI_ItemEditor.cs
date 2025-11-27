@@ -14,11 +14,7 @@ public class UI_ItemEditor : Editor
     private SerializedProperty stackable;
     private SerializedProperty placeable;
     private SerializedProperty image;
-    private SerializedProperty groundSprite;
-    private SerializedProperty groundScale;
-    private SerializedProperty hasCollider;
-    private SerializedProperty isTrigger;
-    private SerializedProperty pickupRadius;
+    // Hidden ground item properties - no longer serialized
     private SerializedProperty structurePrefab;
 
     private void OnEnable()
@@ -33,11 +29,7 @@ public class UI_ItemEditor : Editor
         stackable = serializedObject.FindProperty("stackable");
         placeable = serializedObject.FindProperty("placeable");
         image = serializedObject.FindProperty("image");
-        groundSprite = serializedObject.FindProperty("groundSprite");
-        groundScale = serializedObject.FindProperty("groundScale");
-        hasCollider = serializedObject.FindProperty("hasCollider");
-        isTrigger = serializedObject.FindProperty("isTrigger");
-        pickupRadius = serializedObject.FindProperty("pickupRadius");
+        // Ground item properties are hidden - no longer serialized
         structurePrefab = serializedObject.FindProperty("structurePrefab");
     }
 
@@ -45,9 +37,7 @@ public class UI_ItemEditor : Editor
     {
         serializedObject.Update();
 
-        // Item Properties Header
-        EditorGUILayout.LabelField("Item Properties", EditorStyles.boldLabel);
-        
+        // Basic Item Properties (no header since it's the main title)
         EditorGUILayout.PropertyField(id);
         EditorGUILayout.PropertyField(itemName);
         EditorGUILayout.PropertyField(itemType);
@@ -74,29 +64,23 @@ public class UI_ItemEditor : Editor
 
         EditorGUILayout.Space();
         
-        // UI Item Properties Header
+        // UI Item Properties
         EditorGUILayout.LabelField("UI Item Properties", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(image);
         
-        EditorGUILayout.Space();
-        
-        // Ground Item Properties Header
-        EditorGUILayout.LabelField("Ground Item Properties", EditorStyles.boldLabel);
-        EditorGUILayout.PropertyField(groundSprite);
-        EditorGUILayout.PropertyField(groundScale);
-        EditorGUILayout.PropertyField(hasCollider);
-        EditorGUILayout.PropertyField(isTrigger);
-        EditorGUILayout.PropertyField(pickupRadius);
-
         // Only show structure properties if item category is Structure
         if (itemCategory.enumValueIndex == 1) // 1 = Structure
         {
             EditorGUILayout.Space();
-            
-            // Structure Properties Header
             EditorGUILayout.LabelField("Structure Properties", EditorStyles.boldLabel);
             EditorGUILayout.PropertyField(structurePrefab);
         }
+        
+        EditorGUILayout.Space();
+        
+        // Ground Item Properties
+        EditorGUILayout.LabelField("Ground Item Properties", EditorStyles.boldLabel);
+        EditorGUILayout.HelpBox("Ground items automatically use the UI Image sprite and default settings.", MessageType.Info);
 
         serializedObject.ApplyModifiedProperties();
     }

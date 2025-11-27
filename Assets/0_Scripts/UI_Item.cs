@@ -77,11 +77,11 @@ public class UI_Item : ScriptableObject
     [SerializeField] private Sprite image;
     
     [Header("Ground Item Properties")]
-    [SerializeField] private Sprite groundSprite;
-    [SerializeField] private Vector3 groundScale = Vector3.one;
-    [SerializeField] private bool hasCollider = true;
-    [SerializeField] private bool isTrigger = false;
-    [SerializeField] private float pickupRadius = 1f;
+    [HideInInspector] private Sprite groundSprite;
+    [HideInInspector] private Vector3 groundScale = Vector3.one;
+    [HideInInspector] private bool hasCollider = true;
+    [HideInInspector] private bool isTrigger = false;
+    [HideInInspector] private float pickupRadius = 1f;
     
     [Header("Structure Properties")]
     [SerializeField] private GameObject structurePrefab;
